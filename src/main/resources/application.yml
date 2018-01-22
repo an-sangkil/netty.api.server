@@ -1,0 +1,6 @@
+
+netty:
+  server:
+    port: 8080
+  
+
