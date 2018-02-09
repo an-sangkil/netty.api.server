@@ -1,4 +1,4 @@
-package cj.enm.mezzo;
+package com.mezzomedia;
 
 import java.nio.charset.Charset;
 
