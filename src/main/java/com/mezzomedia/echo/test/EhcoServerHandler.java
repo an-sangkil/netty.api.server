@@ -1,4 +1,4 @@
-package com.mezzomedia;
+package com.mezzomedia.echo.test;
 
 import java.nio.charset.Charset;
 

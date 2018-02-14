@@ -1,4 +1,4 @@
-package com.mezzomedia;
+package com.mezzomedia.echo.test;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
