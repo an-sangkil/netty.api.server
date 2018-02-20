@@ -1,5 +1,6 @@
 package com.mezzomedia;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.mezzomedia.echo.test.EhcoServerHandler;
@@ -16,20 +17,42 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+/**
+ * 
+ * <pre>
+ * Class Name  : MezzoAdServer.java
+ * Description : 
+ * Modification Information
+ *
+ *    수정일　　　 　　  		수정자　　　     			  수정내용
+ *    ────────────   ─────────   ───────────────────────────────
+ *    2018. 2. 19.          skan               최초생성
+ * </pre>
+ *
+ * @author skan
+ * @since 2018. 2. 19.
+ * @version 
+ *
+ * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ */
 @Component
 public class MezzoAdServer {
 
 	
+	@Value("${netty.server.port:8080}")
+	private int tcpPort;
+	
+	
 	public void start (){
-		/*
-			NioEventLoop는 I/O 동작을 다루는 멀티스레드 이벤트 루프입니다.
-			네티는 다양한 이벤트 루프를 제공합니다.
-			이 예제에서는 두개의 Nio 이벤트 루프를 사용합니다.
-			첫번째 'parent' 그룹은 인커밍 커넥션(incomming connection)을 액세스합니다.
-			두번째 'child' 그룹은 액세스한 커넥션의 트래픽을 처리합니다.
-			만들어진 채널에 매핑하고 스레드를 얼마나 사용할지는 EventLoopGroup 구현에 의존합니다.
-			그리고 생성자를 통해서도 구성할 수 있습니다.
-		*/
+			/*
+				NioEventLoop는 I/O 동작을 다루는 멀티스레드 이벤트 루프입니다.
+				네티는 다양한 이벤트 루프를 제공합니다.
+				이 예제에서는 두개의 Nio 이벤트 루프를 사용합니다.
+				첫번째 'parent' 그룹은 인커밍 커넥션(incomming connection)을 액세스합니다.
+				두번째 'child' 그룹은 액세스한 커넥션의 트래픽을 처리합니다.
+				만들어진 채널에 매핑하고 스레드를 얼마나 사용할지는 EventLoopGroup 구현에 의존합니다.
+				그리고 생성자를 통해서도 구성할 수 있습니다.
+			*/
 			EventLoopGroup parentGroup = new NioEventLoopGroup(1);
 			EventLoopGroup childGroup = new NioEventLoopGroup();
 			try{
@@ -37,24 +60,24 @@ public class MezzoAdServer {
 				// 이 클래스를 사용하면 서버에서 Channel을 직접 세팅 할 수 있습니다.
 				ServerBootstrap sb = new ServerBootstrap();
 				sb.group(parentGroup, childGroup)
-				// 인커밍 커넥션을 액세스하기 위해 새로운 채널을 객체화 하는 클래스 지정합니다.
-				.channel(NioServerSocketChannel.class)
-				// 상세한 Channel 구현을 위해 옵션을 지정할 수 있습니다.
-				.option(ChannelOption.SO_BACKLOG, 100)
-				.handler(new LoggingHandler(LogLevel.INFO))
-				// 새롭게 액세스된 Channel을 처리합니다.
-				// ChannelInitializer는 특별한 핸들러로 새로운 Channel의
-				// 환경 구성을 도와 주는 것이 목적입니다.
-				.childHandler(new ChannelInitializer<SocketChannel>() {
-					@Override
-					protected void initChannel(SocketChannel sc) throws Exception {
-						ChannelPipeline cp = sc.pipeline();
-						cp.addLast(new EhcoServerHandler());
-					}
+					// 인커밍 커넥션을 액세스하기 위해 새로운 채널을 객체화 하는 클래스 지정합니다.
+					.channel(NioServerSocketChannel.class)
+					// 상세한 Channel 구현을 위해 옵션을 지정할 수 있습니다.
+					.option(ChannelOption.SO_BACKLOG, 100)
+					.handler(new LoggingHandler(LogLevel.INFO))
+					// 새롭게 액세스된 Channel을 처리합니다.
+					// ChannelInitializer는 특별한 핸들러로 새로운 Channel의
+					// 환경 구성을 도와 주는 것이 목적입니다.
+					.childHandler(new ChannelInitializer<SocketChannel>() {
+						@Override
+						protected void initChannel(SocketChannel sc) throws Exception {
+							ChannelPipeline cp = sc.pipeline();
+							cp.addLast(new EhcoServerHandler());
+						}
 				});
 
 				// 인커밍 커넥션을 액세스하기 위해 바인드하고 시작합니다.
-				ChannelFuture cf = sb.bind(8080).sync();
+				ChannelFuture cf = sb.bind(tcpPort).sync();
 
 				// 서버 소켓이 닫힐때까지 대기합니다.
 				cf.channel().closeFuture().sync();
