@@ -7,13 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
 
 /**
  * 
  * <pre>
- * Class Name  : ServerApplication.java
+ * Class Name  : Application.java
  * Description : AD서버 스타트 파일  SpringBoot configuration  
  * Modification Information
  *
@@ -29,15 +30,17 @@ import org.springframework.core.env.StandardEnvironment;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @SpringBootApplication
-public class ServerApplication {
+public class Application {
 	
 	@Autowired
 	private ApplicationContext context;
 	
 	public static void main (String[] args) throws Exception {
 		
+		
+		//AnnotationConfigApplicationContext;
 		// SpringBoot run 
-		SpringApplication application = new SpringApplication(ServerApplication.class);
+		SpringApplication application = new SpringApplication(Application.class);
 		
 		
 		ConfigurableEnvironment environment = new StandardEnvironment();

@@ -1,12 +1,20 @@
 package com.mezzomedia.config;
 
+import java.awt.image.PixelInterleavedSampleModel;
+
+import com.mezzomedia.handler.MezzoHttpHandler;
+
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseDecoder;
 
 /**
  * 
  * <pre>
- * Class Name  : ApplicationConfig.java
+ * Class Name  : ApplicationChannelInitializer.java
  * Description : 
  * Modification Information
  *
@@ -21,11 +29,17 @@ import io.netty.channel.socket.SocketChannel;
  *
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
-public class ApplicationInitializerConfig extends ChannelInitializer<SocketChannel> {
+public class ApplicationChannelInitializer extends ChannelInitializer<SocketChannel> {
 
 	@Override
-	protected void initChannel(SocketChannel arg0) throws Exception {
+	protected void initChannel(SocketChannel socketChannel) throws Exception {
 		
+		ChannelPipeline channelPipeline =  socketChannel.pipeline();
+		
+		channelPipeline.addLast(new HttpRequestDecoder());
+		channelPipeline.addLast(new HttpObjectAggregator(65536));
+		channelPipeline.addLast(new HttpResponseDecoder());
+		channelPipeline.addLast(new MezzoHttpHandler());
 		
 	}
 
