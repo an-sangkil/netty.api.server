@@ -3,4 +3,16 @@ netty:
   server:
     port: 8080
   
+logging:
+  file: logs/application-dev.log
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.mezzomedia: DEBUG
+    org.hibernate: ERROR
+    
 
+    
