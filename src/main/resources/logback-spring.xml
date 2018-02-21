@@ -2,12 +2,6 @@
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
-<!-- 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> -->
-<!-- 		<encoder> -->
-<!-- 			<pattern>%d{yyyy:MM:dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n -->
-<!-- 			</pattern> -->
-<!-- 		</encoder> -->
-<!-- 	</appender> -->
 
 	<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
@@ -18,19 +12,76 @@
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
 		</filter>
-
 		<encoder>
-			<pattern>%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n</pattern>
+			<pattern>%msg %n</pattern>
 		</encoder>
 	</appender>
+	
+	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>logs/error/error.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>logs/error/join_error_%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n
+			</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>error</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>logs/request/request.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>logs/request/request_%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>1</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>%msg %n</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+				<marker>ACCESS_MAKER</marker>
+			</evaluator>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter> 
+	</appender>
+	<appender name="RESPONSE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>logs/response/response.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>logs/response/response_%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>1</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>%msg %n</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+				<marker>RESPONSE_MAKER</marker>
+			</evaluator>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter> 
+	</appender>
+	
+	
+	
 
-	<logger name="com.mezzomedia" level="DEBUG" />
+<!-- 	<logger name="com.mezzomedia" level="DEBUG" /> -->
 	<logger name="org.springframework" level="DEBUG" />
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
-<!-- 		<appender-ref ref="STDOUT" /> -->
+		
+		<appender-ref ref="ERROR"/>
+		<appender-ref ref="REQUEST"/>
+		<appender-ref ref="RESPONSE"/>
 		<appender-ref ref="dailyRollingFileAppender" />
 	</root>
 </configuration>

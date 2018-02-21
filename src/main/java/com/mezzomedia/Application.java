@@ -1,5 +1,7 @@
 package com.mezzomedia;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -32,6 +34,8 @@ import org.springframework.core.env.StandardEnvironment;
 @SpringBootApplication
 public class Application {
 	
+	private final static Logger logger = LoggerFactory.getLogger(Application.class); 
+	
 	@Autowired
 	private ApplicationContext context;
 	
@@ -41,15 +45,17 @@ public class Application {
 		//AnnotationConfigApplicationContext;
 		// SpringBoot run 
 		SpringApplication application = new SpringApplication(Application.class);
-		
-		
 		ConfigurableEnvironment environment = new StandardEnvironment();
 		environment.setDefaultProfiles("dev");
 		application.setEnvironment(environment);
 		//application.printBanner();
 		ConfigurableApplicationContext context = application.run(args);
 		MezzoAdServer mezzoAdServer = context.getBean(MezzoAdServer.class);
+		
+		logger.error("strat!!!!!!!!!");
 		mezzoAdServer.start();
+		
+		
 	}
 	
 	

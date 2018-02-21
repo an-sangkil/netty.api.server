@@ -11,6 +11,8 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mezzomedia.config.LogMaker;
+
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,7 +21,6 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -46,7 +47,7 @@ public class MezzoHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
 		
 		if (msg instanceof HttpContent) {
             if (msg instanceof LastHttpContent) {
-                logger.debug("LastHttpContent message received!! {}", httpRequest.uri());
+                logger.debug(LogMaker.accessMaker ,"LastHttpContent message received!! {}", httpRequest.uri());
 
                 LastHttpContent trailer = (LastHttpContent) msg;
 
@@ -76,15 +77,17 @@ public class MezzoHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
 	
 	
 	private boolean writeResponse(HttpObject currentObj, ChannelHandlerContext ctx) {
-        // Decide whether to close the connection or not.
+        
+		// Decide whether to close the connection or not.
         boolean keepAlive = HttpUtil.isKeepAlive(httpRequest);
+
         // Build the response object.
         FullHttpResponse response = new DefaultFullHttpResponse(
         		HTTP_1_1,
                 currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
                 Unpooled.copiedBuffer( "test", CharsetUtil.UTF_8));
-        //HttpHeaderNames.CONTENT_LENGTH;
         
+        //HttpHeaderNames.CONTENT_LENGTH;
         response.headers().set(CONTENT_TYPE, "application/json; charset=UTF-8");
 
         if (keepAlive) {
@@ -98,6 +101,8 @@ public class MezzoHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
 
         // Write the response.
         ctx.write(response);
+        
+        logger.debug(LogMaker.responseMaker ,"ResponseData = {}", response.content());
 
         return keepAlive;
     }
