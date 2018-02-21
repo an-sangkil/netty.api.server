@@ -2,7 +2,10 @@
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
-
+	
+	<!-- ################################################ -->
+	<!-- # 일반 롤링 파일 최대 30일 -->
+	<!-- ################################################ -->
 	<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -17,6 +20,10 @@
 		</encoder>
 	</appender>
 	
+	
+	<!-- ################################################ -->
+	<!-- # ERROR: 파일 최대 30일 -->
+	<!-- ################################################ -->
 	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>logs/error/error.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -34,11 +41,15 @@
 		</filter>
 	</appender>
 	
+	
+	<!-- ################################################ -->
+	<!-- # Access Log / Response Filtering  : 30일 		  -->
+	<!-- ################################################ -->
 	<appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>logs/request/request.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>logs/request/request_%d{yyyy-MM-dd}.log</FileNamePattern>
-			<maxHistory>1</maxHistory>
+			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
 			<Pattern>%msg %n</Pattern>
@@ -55,7 +66,7 @@
 		<File>logs/response/response.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>logs/response/response_%d{yyyy-MM-dd}.log</FileNamePattern>
-			<maxHistory>1</maxHistory>
+			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
 			<Pattern>%msg %n</Pattern>
@@ -68,8 +79,6 @@
 			<OnMismatch>DENY</OnMismatch>
 		</filter> 
 	</appender>
-	
-	
 	
 
 <!-- 	<logger name="com.mezzomedia" level="DEBUG" /> -->
