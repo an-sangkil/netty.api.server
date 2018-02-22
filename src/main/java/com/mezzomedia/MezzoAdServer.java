@@ -3,7 +3,7 @@ package com.mezzomedia;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.mezzomedia.config.ApplicationChannelInitializer;
+import com.mezzomedia.core.ApplicationChannelInitializer;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

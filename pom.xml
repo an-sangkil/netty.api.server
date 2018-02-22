@@ -39,6 +39,12 @@
 			<version>4.1.21.Final</version>
 <!-- 			<version>4.0.31.Final</version> -->
 		</dependency>
+		
+		<dependency>
+			<groupId>com.mezzomedia</groupId>
+			<artifactId>com.mezzomedia.utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>adserver</finalName>

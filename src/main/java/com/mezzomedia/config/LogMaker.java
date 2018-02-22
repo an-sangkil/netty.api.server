@@ -14,10 +14,10 @@ import org.slf4j.MarkerFactory;
  *
  *    수정일　　　 　　  		수정자　　　     			  수정내용
  *    ────────────   ─────────   ───────────────────────────────
- *    2018. 2. 21.          mezzomedia               최초생성
+ *    2018. 2. 21.          skan               최초생성
  * </pre>
  *
- * @author mezzomedia
+ * @author skan
  * @since 2018. 2. 21.
  * @version 
  *

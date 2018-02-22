@@ -1,4 +1,4 @@
-package com.mezzomedia.config;
+package com.mezzomedia.core;
 
 import com.mezzomedia.handler.MezzoHttpHandler;
 
