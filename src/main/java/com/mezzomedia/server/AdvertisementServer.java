@@ -1,9 +1,9 @@
-package com.mezzomedia;
+package com.mezzomedia.server;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.mezzomedia.core.ApplicationChannelInitializer;
+import com.mezzomedia.server.core.ApplicationChannelInitializer;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -17,13 +17,6 @@ import io.netty.handler.logging.LoggingHandler;
 /**
  * 
  * <pre>
- * Class Name  : MezzoAdServer.java
- * Description : 
- * Modification Information
- *
- *    수정일　　　 　　  		수정자　　　     			  수정내용
- *    ────────────   ─────────   ───────────────────────────────
- *    2018. 2. 19.          skan               최초생성
  * </pre>
  *
  * @author skan
@@ -33,7 +26,7 @@ import io.netty.handler.logging.LoggingHandler;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @Component
-public class MezzoAdServer {
+public class AdvertisementServer {
 
 	
 	@Value("${netty.server.port:8080}")

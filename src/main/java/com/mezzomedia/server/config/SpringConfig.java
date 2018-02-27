@@ -1,4 +1,4 @@
-package com.mezzomedia.config;
+package com.mezzomedia.server.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

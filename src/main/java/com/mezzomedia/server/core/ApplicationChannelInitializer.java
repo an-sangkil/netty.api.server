@@ -1,6 +1,6 @@
-package com.mezzomedia.core;
+package com.mezzomedia.server.core;
 
-import com.mezzomedia.handler.MezzoHttpHandler;
+import com.mezzomedia.server.handler.channel.MezzoHttpHandler;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

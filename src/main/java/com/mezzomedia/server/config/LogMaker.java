@@ -1,4 +1,4 @@
-package com.mezzomedia.config;
+package com.mezzomedia.server.config;
 
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;

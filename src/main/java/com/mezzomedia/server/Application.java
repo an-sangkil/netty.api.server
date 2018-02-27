@@ -1,4 +1,4 @@
-package com.mezzomedia;
+package com.mezzomedia.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,12 +49,14 @@ public class Application {
 		environment.setDefaultProfiles("dev");
 		application.setEnvironment(environment);
 		//application.printBanner();
+		
+		
 		ConfigurableApplicationContext context = application.run(args);
-		MezzoAdServer mezzoAdServer = context.getBean(MezzoAdServer.class);
+		AdvertisementServer advertisementServer = context.getBean(AdvertisementServer.class);
 		
-		logger.error("strat!!!!!!!!!");
-		mezzoAdServer.start();
+		logger.info("strat!!!!!!!!!");
 		
+		advertisementServer.start();
 		
 	}
 	
