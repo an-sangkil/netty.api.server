@@ -14,13 +14,10 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 /**
  * 
  * <pre>
- * Class Name  : ApplicationChannelInitializer.java
- * Description : 
- * Modification Information
- *
- *    수정일　　　 　　  		수정자　　　     			  수정내용
- *    ────────────   ─────────   ───────────────────────────────
- *    2018. 2. 19.          skan               최초생성
+ * Description : 채널 초기화 부분 -> HTTP 채널 사용
+ *               Request, Response 및  Body 자동 컴포져
+ *               사용자 확장 핸들러 추가 
+ *               
  * </pre>
  *
  * @author skan
