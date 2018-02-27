@@ -9,7 +9,7 @@
 	<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/applicatoin.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>logs/%d{yyyyMM}/application1.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -48,7 +48,7 @@
 	<appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>logs/request/request.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/request/request_%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>logs/request/request_%d{yyyy-MM-dd_HH}.log</FileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
@@ -62,10 +62,12 @@
 			<OnMismatch>DENY</OnMismatch>
 		</filter> 
 	</appender>
+	
+	
 	<appender name="RESPONSE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>logs/response/response.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/response/response_%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>logs/response/response_%d{yyyy-MM-dd_HH}.tar.gz</FileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
@@ -86,7 +88,7 @@
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="FILE" />
+<!-- 		<appender-ref ref="FILE" /> -->
 		
 		<appender-ref ref="ERROR"/>
 		<appender-ref ref="REQUEST"/>
