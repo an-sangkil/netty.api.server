@@ -32,9 +32,9 @@ import org.springframework.core.env.StandardEnvironment;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @SpringBootApplication
-public class Application {
+public class SpringAdverApplication {
 	
-	private final static Logger logger = LoggerFactory.getLogger(Application.class); 
+	private final static Logger logger = LoggerFactory.getLogger(SpringAdverApplication.class); 
 	
 	@Autowired
 	private ApplicationContext context;
@@ -44,7 +44,7 @@ public class Application {
 		
 		//AnnotationConfigApplicationContext;
 		// SpringBoot run 
-		SpringApplication application = new SpringApplication(Application.class);
+		SpringApplication application = new SpringApplication(SpringAdverApplication.class);
 		ConfigurableEnvironment environment = new StandardEnvironment();
 		environment.setDefaultProfiles("dev");
 		application.setEnvironment(environment);

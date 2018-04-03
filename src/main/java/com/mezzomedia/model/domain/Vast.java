@@ -1,4 +1,4 @@
-package com.mezzomedia.model;
+package com.mezzomedia.model.domain;
 
 import java.util.List;
 

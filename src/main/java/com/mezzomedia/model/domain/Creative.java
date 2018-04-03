@@ -1,4 +1,4 @@
-package com.mezzomedia.model;
+package com.mezzomedia.model.domain;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
