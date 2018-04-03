@@ -1,5 +1,17 @@
 package com.mezzomedia.server.handler.dispatcher;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.mezzomedia.model.dto.AerospikeProduct;
+import com.mezzomedia.server.config.ApplicationContextProvider;
+import com.mezzomedia.service.AerospikeService;
+
 /**
 
  * <pre>
@@ -14,6 +26,36 @@ package com.mezzomedia.server.handler.dispatcher;
  *
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
+@Component
 public class DispatcherServlet {
+	
+	private static Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
+	
+	@Autowired private ApplicationContextProvider applicationContextProvider;
+	
+	private static ApplicationContext APPLICATION_SPRING_CONTEXT;
+	
+	@Autowired
+	public void initializer(ApplicationContext springContext) {
+		APPLICATION_SPRING_CONTEXT = springContext;
+		applicationContextProvider.setApplicationContext(springContext);
+		
+		logger.info("springContext = {} " ,  APPLICATION_SPRING_CONTEXT);
+		logger.info("applicationContextProvider = {} " ,  applicationContextProvider);
+	}
+	
+	/**
+	 * 
+	 * TODO : 요청 URI , URL PATH  확인후 분기 처리  
+	 */
+	public static void dispatch() {
+		
+		AerospikeService aerospikeService =ApplicationContextProvider.getBean(AerospikeService.class);
+		aerospikeService.save(new AerospikeProduct());
+		
+		logger.debug("dispatch ........ handling....");
+		
+		
+	}
 
 }
