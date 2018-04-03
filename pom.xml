@@ -27,6 +27,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.aerospike</groupId>
+			<artifactId>spring-data-aerospike</artifactId>
+			<version>1.0.2.RELEASE</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -45,8 +56,23 @@
 			<artifactId>com.mezzomedia.utils</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.aerospike</groupId> -->
+<!-- 			<artifactId>aerospike-client</artifactId> -->
+<!-- 			<version>4.0.6</version> -->
+<!-- 		</dependency> -->
+		
 	</dependencies>
 	<build>
 		<finalName>adserver</finalName>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>spring-libs-snapshot</id>
+			<url>https://repo.spring.io/libs-snapshot</url>
+		</repository>
+	</repositories>
+
 </project>
