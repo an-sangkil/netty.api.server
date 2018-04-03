@@ -1,5 +1,6 @@
 package com.mezzomedia.server.core;
 
+import com.mezzomedia.server.handler.channel.ApiRequestParser;
 import com.mezzomedia.server.handler.channel.MezzoHttpHandler;
 
 import io.netty.channel.ChannelInitializer;
@@ -10,6 +11,8 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 /**
  * 
@@ -30,13 +33,17 @@ public class ApplicationChannelInitializer extends ChannelInitializer<SocketChan
 
 	@Override
 	protected void initChannel(SocketChannel socketChannel) throws Exception {
-		
+		///////////////////////////////////////////////
+		// 채널 파이프라인 객체 생성
+		///////////////////////////////////////////////
 		ChannelPipeline channelPipeline =  socketChannel.pipeline();
 		
 		channelPipeline.addLast(new HttpRequestDecoder());
 		channelPipeline.addLast(new HttpObjectAggregator(65536));
 		channelPipeline.addLast(new HttpResponseEncoder());
 		channelPipeline.addLast(new HttpContentCompressor());
+		channelPipeline.addLast(new ApiRequestParser());
+		channelPipeline.addLast(new LoggingHandler(LogLevel.DEBUG));
 		channelPipeline.addLast(new MezzoHttpHandler());
 		
 	}
