@@ -7,10 +7,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mezzomedia.model.AdSystem;
-import com.mezzomedia.model.Advertisement;
-import com.mezzomedia.model.Advertisement.InLine;
-import com.mezzomedia.model.Vast;
+import com.mezzomedia.model.domain.AdSystem;
+import com.mezzomedia.model.domain.Advertisement;
+import com.mezzomedia.model.domain.Vast;
+import com.mezzomedia.model.domain.Advertisement.InLine;
 import com.mezzomedia.util.utils.xml.XmlUtils;
 
 public class XmlConvertTest {
