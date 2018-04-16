@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>com.aerospike</groupId>
 			<artifactId>spring-data-aerospike</artifactId>
-			<version>1.0.2.RELEASE</version>
+			<version>1.2.1.RELEASE</version>
 		</dependency>
 
 		<dependency>
