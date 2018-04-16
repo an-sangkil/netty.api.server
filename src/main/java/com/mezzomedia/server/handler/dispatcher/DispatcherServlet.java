@@ -46,9 +46,10 @@ public class DispatcherServlet {
 	
 	/**
 	 * 
-	 * TODO : 요청 URI , URL PATH  확인후 분기 처리  
+	 * TODO : 요청 URI , URL PATH  확인후 분기 처리
+	 * @param urlPath
 	 */
-	public static void dispatch() {
+	public static void dispatch(String urlPath) {
 		
 		AerospikeService aerospikeService =ApplicationContextProvider.getBean(AerospikeService.class);
 		aerospikeService.save(new AerospikeProduct());

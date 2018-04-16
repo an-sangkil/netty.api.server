@@ -4,7 +4,6 @@ import org.springframework.data.annotation.Id;
 
 public class AerospikeProduct {
 	@Id
-	
 	private Integer id;
 	
 	private String productId;

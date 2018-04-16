@@ -64,8 +64,9 @@ public class MezzoHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
             }
 		}
 		
-		// TODO URL PATH 분기 처리 
-		DispatcherServlet.dispatch();
+		// TODO URL PATH 분기 처리
+        String urlPath = "";
+		DispatcherServlet.dispatch(urlPath);
 		
 		
 		if (msg instanceof HttpContent) {
