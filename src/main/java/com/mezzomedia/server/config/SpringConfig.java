@@ -1,5 +1,6 @@
 package com.mezzomedia.server.config;
 
+import com.mezzomedia.core.service.AerospikeService;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,7 +25,7 @@ import org.springframework.context.annotation.PropertySource;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @Configuration
-@ComponentScan(basePackages= {"com.mezzomedia.service"})
+@ComponentScan(basePackageClasses = AerospikeService.class)
 public class SpringConfig {
 	
 	@Configuration

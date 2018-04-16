@@ -1,5 +1,6 @@
 package com.mezzomedia.server.handler.dispatcher;
 
+import com.mezzomedia.core.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +49,21 @@ public class DispatcherServlet {
 	 * @param urlPath
 	 */
 	public static void dispatch(String urlPath) {
-		
+		logger.debug("dispatch ........ handling....");
+		logger.debug("///////////////////////////////////////////////////////////////////");
+		logger.debug("//  AEROSPIKE TEST ");
+		logger.debug("///////////////////////////////////////////////////////////////////");
 		AerospikeService aerospikeService =ApplicationContextProvider.getBean(AerospikeService.class);
 		aerospikeService.save(new AerospikeProduct());
-		
+
+
 		logger.debug("dispatch ........ handling....");
-		
+		logger.debug("///////////////////////////////////////////////////////////////////");
+		logger.debug("//  Redis TEST");
+		logger.debug("///////////////////////////////////////////////////////////////////");
+
+		RedisService redisService = ApplicationContextProvider.getBean(RedisService.class);
+		redisService.save(new Object());
 		
 	}
 
