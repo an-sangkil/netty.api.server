@@ -1,4 +1,4 @@
-package com.mezzomedia.service;
+package com.mezzomedia.core.service;
 
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Component;

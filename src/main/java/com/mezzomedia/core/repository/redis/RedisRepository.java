@@ -1,4 +1,4 @@
-package com.mezzomedia.repository.redis;
+package com.mezzomedia.core.repository.redis;
 
 /**
  * <pre>

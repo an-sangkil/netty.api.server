@@ -1,14 +1,14 @@
-package com.mezzomedia.service;
+package com.mezzomedia.core.service;
 
 import java.util.List;
 
-import com.mezzomedia.repository.aerospike.AerospikeTestRepository;
+import com.mezzomedia.core.repository.aerospike.AerospikeTestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mezzomedia.model.dto.AerospikeProduct;
+import com.mezzomedia.core.model.dto.AerospikeProduct;
 
 @Service
 public class AerospikeService {

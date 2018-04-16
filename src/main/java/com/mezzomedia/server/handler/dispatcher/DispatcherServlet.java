@@ -3,14 +3,12 @@ package com.mezzomedia.server.handler.dispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import com.mezzomedia.model.dto.AerospikeProduct;
+import com.mezzomedia.core.model.dto.AerospikeProduct;
 import com.mezzomedia.server.config.ApplicationContextProvider;
-import com.mezzomedia.service.AerospikeService;
+import com.mezzomedia.core.service.AerospikeService;
 
 /**
 
