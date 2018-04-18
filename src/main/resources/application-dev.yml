@@ -23,5 +23,13 @@ spring:
     host: 192.168.99.100
     port: 32768
 
-
-    
+mybatis:
+    type-aliases-package: com.mezzomedia.core.model.domain
+    configuration:
+        map-underscore-to-camel-case: true
+        use-generated-keys: true
+        default-fetch-size: 100
+        default-statement-timeout: 30
+        default-executor-type: reuse
+        auto-mapping-behavior: partial
+    mapper-locations: classpath:com/mezzomedia/core/repository/*.xml

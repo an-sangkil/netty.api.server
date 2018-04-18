@@ -1,4 +1,4 @@
-package com.mezzomedia.core.model.domain;
+package com.mezzomedia.core.model.domain.ads;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

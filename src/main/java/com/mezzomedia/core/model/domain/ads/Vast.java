@@ -1,4 +1,4 @@
-package com.mezzomedia.core.model.domain;
+package com.mezzomedia.core.model.domain.ads;
 
 import java.util.List;
 

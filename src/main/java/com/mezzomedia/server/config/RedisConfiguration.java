@@ -30,7 +30,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @EnableRedisRepositories(basePackages = {"com.mezzomedia.repository.redis"})
-public class RedisConfiuration {
+public class RedisConfiguration {
 
     @Value("${spring.redis.host:192.168.99.100}")
     private String redisHost;

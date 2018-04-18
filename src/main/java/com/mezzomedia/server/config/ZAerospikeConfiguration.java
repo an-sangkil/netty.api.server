@@ -28,7 +28,7 @@ import com.aerospike.client.policy.ClientPolicy;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @EnableAerospikeRepositories(basePackageClasses = {AerospikeTestRepository.class})
-public class ZAerospikeConfigration {
+public class ZAerospikeConfiguration {
 
 	@Value("${aerospike.host:210.221.235.202}")
 	private String aerospikeHost;
