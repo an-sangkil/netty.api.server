@@ -5,7 +5,7 @@ netty:
 
 
 aerospike:
-  host: 192.168.99.100
+  host: 210.221.235.202
   port: 3000
   
 logging:
@@ -20,8 +20,8 @@ logging:
     org.hibernate: ERROR
 spring:
   redis:
-    host: 192.168.99.100
-    port: 32768
+    host: 210.221.235.202
+    port: 6379
 
 mybatis:
     type-aliases-package: com.mezzomedia.core.model.domain.object
@@ -37,7 +37,7 @@ mybatis:
 # Database
 db:
   driver: com.mysql.jdbc.Driver
-  url: jdbc:mysql://192.168.99.100:3306/ad_teck
+  url: jdbc:mysql://210.221.235.202:3306/ad_teck
   username: root
   password: mezzo2018
 
