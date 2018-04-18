@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -33,7 +35,8 @@ import javax.sql.DataSource;
 @Lazy
 @EnableTransactionManagement
 @MapperScan(basePackages={"com.mezzomedia.core.repository.mybatis"}
-        , sqlSessionFactoryRef="mybatisSqlSessionFactory")
+        , sqlSessionFactoryRef="mybatisSqlSessionFactory"
+)
 
 public class MybatisConfiguration implements EnvironmentAware {
 
@@ -46,6 +49,8 @@ public class MybatisConfiguration implements EnvironmentAware {
     @Value("${db.username}")
     private String DB_USERNAME;
 
+    @Resource
+    public org.mybatis.spring.boot.autoconfigure.MybatisProperties mybatisProperties;
 
     @Bean(name = "mybatisDataSource")
     public DataSource dataSource() {
@@ -69,17 +74,36 @@ public class MybatisConfiguration implements EnvironmentAware {
         return transactionManager;
     }
 
+    /**
+     * YAML 에설정한 Mybatis Configuration 설정 포함
+     * @return
+     * @throws Exception
+     */
     @Bean(name = "mybatisSqlSessionFactory")
     public SqlSessionFactory mybatisSqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(this.dataSource());
 
         // YAML에 포함
-        //sqlSessionFactoryBean.setTypeAliases();
-        //sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:com/mezzomedia/adtect/web/mybatis/core/*.xml"));//("classpath:mapper/*.xml"));
-        //sqlSessionFactoryBean.setConfigLocation(new DefaultResourceLoader().getResource("classpath:mybatis.xml"));
+        sqlSessionFactoryBean.setConfiguration(mybatisProperties.getConfiguration());
+        sqlSessionFactoryBean.setTypeAliasesPackage(mybatisProperties.getTypeAliasesPackage());
+        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(mybatisProperties.getMapperLocations()[0]));//("classpath:mapper/*.xml"));
 
         return (SqlSessionFactory) sqlSessionFactoryBean.getObject();
+    }
+
+
+    /**
+     * 커스텀 Mybatis configuration
+     * @return
+     */
+    @Bean
+    ConfigurationCustomizer mybatisConfigurationCustomizer() {
+        return new ConfigurationCustomizer() {
+            @Override
+            public void customize(org.apache.ibatis.session.Configuration configuration) {
+            }
+        };
     }
 
     @Bean

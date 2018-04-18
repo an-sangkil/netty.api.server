@@ -1,5 +1,6 @@
 package com.mezzomedia.server.handler.dispatcher;
 
+import com.mezzomedia.core.service.MybatisService;
 import com.mezzomedia.core.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,14 +58,21 @@ public class DispatcherServlet {
 		aerospikeService.save(new AerospikeProduct());
 
 
-		logger.debug("dispatch ........ handling....");
 		logger.debug("///////////////////////////////////////////////////////////////////");
 		logger.debug("//  Redis TEST");
 		logger.debug("///////////////////////////////////////////////////////////////////");
 
 		RedisService redisService = ApplicationContextProvider.getBean(RedisService.class);
 		redisService.save(new Object());
-		
+
+
+		logger.debug("///////////////////////////////////////////////////////////////////");
+		logger.debug("//  Mybatis  TEST");
+		logger.debug("///////////////////////////////////////////////////////////////////");
+
+		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
+		mybatisService.findUserList();
+
 	}
 
 }

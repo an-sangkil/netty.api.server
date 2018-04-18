@@ -24,7 +24,7 @@ spring:
     port: 32768
 
 mybatis:
-    type-aliases-package: com.mezzomedia.core.model.domain
+    type-aliases-package: com.mezzomedia.core.model.domain.object
     configuration:
         map-underscore-to-camel-case: true
         use-generated-keys: true
@@ -32,4 +32,20 @@ mybatis:
         default-statement-timeout: 30
         default-executor-type: reuse
         auto-mapping-behavior: partial
-    mapper-locations: classpath:com/mezzomedia/core/repository/*.xml
+    mapper-locations: classpath:com/mezzomedia/core/repository/mybatis/*.xml
+
+# Database
+db:
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://192.168.99.100:3306/ad_teck
+  username: root
+  password: mezzo2018
+
+# Hibernate
+hibernate:
+  hbm2ddl:
+    auto: update
+  dialect: org.hibernate.dialect.MySQL5Dialect
+  show_sql: true
+entitymanager:
+  packagesToScan: com.mezzomedia.adtect.web.jpa.dto

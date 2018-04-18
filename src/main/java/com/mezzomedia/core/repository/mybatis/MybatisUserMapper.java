@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * <pre>
  * Description :
+ *              인터 페이스 클레스 명, 패키지명은  MapperClass를 바라보는 XML설정과 동일하게 해주어야 한다.
  * @author mezzomedia
  * @since 2018.04.18
  * @version
@@ -16,7 +17,7 @@ import java.util.List;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @Mapper
-public interface MybitisUserMapper {
+public interface MybatisUserMapper {
 
     public List<User> userList() throws DataAccessException;
 }
