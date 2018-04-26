@@ -31,15 +31,16 @@ public class AerospikeService {
 		ap.setPrice(500000);
 		ap.setDescription("Aerospike Test.....");
 
-		this.aerospikeRepository.save(ap);
+		//this.aerospikeRepository.save(ap);
+		AerospikeProduct aerospikeProduct = this.aerospikeRepository.findOne(3);
 
-		logger.debug("AerospikeProduct = {}" , ap.getId());
+		logger.debug("AerospikeProduct = {}" , aerospikeProduct.getId());
 
-		List<AerospikeProduct> aerospikeProducts =  (List<AerospikeProduct>) this.aerospikeRepository.findAll();
-		aerospikeProducts.forEach(productItem -> {
-			productItem.toString();
-			logger.debug("AerospikeProduct = {}" , ap.getDescription());
-		});
+//		List<AerospikeProduct> aerospikeProducts =  (List<AerospikeProduct>) this.aerospikeRepository.findAll();
+//		aerospikeProducts.forEach(productItem -> {
+//			productItem.toString();
+//			logger.debug("AerospikeProduct = {}" , ap.getDescription());
+//		});
 
 		return t;
 	}

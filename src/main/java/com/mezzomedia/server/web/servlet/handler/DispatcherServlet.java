@@ -1,7 +1,8 @@
-package com.mezzomedia.server.handler.dispatcher;
+package com.mezzomedia.server.web.servlet.handler;
 
 import com.mezzomedia.core.service.MybatisService;
 import com.mezzomedia.core.service.RedisService;
+import io.netty.handler.codec.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import com.mezzomedia.core.service.AerospikeService;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @Component
-public class DispatcherServlet {
+public class DispatcherServlet extends  AbstractDispatcherParameterParser {
 	
 	private static Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
 	
@@ -48,8 +49,9 @@ public class DispatcherServlet {
 	 * 
 	 * TODO : 요청 URI , URL PATH  확인후 분기 처리
 	 * @param urlPath
+	 * @param httpRequest
 	 */
-	public static void dispatch(String urlPath) {
+	public static void dispatch(String urlPath, HttpRequest httpRequest) {
 		logger.debug("dispatch ........ handling....");
 		logger.debug("///////////////////////////////////////////////////////////////////");
 		logger.debug("//  AEROSPIKE TEST ");
@@ -64,14 +66,14 @@ public class DispatcherServlet {
 
 		RedisService redisService = ApplicationContextProvider.getBean(RedisService.class);
 		redisService.save(new Object());
-
-
-		logger.debug("///////////////////////////////////////////////////////////////////");
-		logger.debug("//  Mybatis  TEST");
-		logger.debug("///////////////////////////////////////////////////////////////////");
-
-		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
-		mybatisService.findUserList();
+//
+//
+//		logger.debug("///////////////////////////////////////////////////////////////////");
+//		logger.debug("//  Mybatis  TEST");
+//		logger.debug("///////////////////////////////////////////////////////////////////");
+//
+//		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
+		//mybatisService.findUserList();
 
 	}
 

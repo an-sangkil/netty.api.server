@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mezzomedia.server.config.LogMaker;
-import com.mezzomedia.server.handler.dispatcher.DispatcherServlet;
+import com.mezzomedia.server.web.servlet.handler.DispatcherServlet;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -66,7 +66,7 @@ public class MezzoHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
 		
 		// TODO URL PATH 분기 처리
         String urlPath = "";
-		DispatcherServlet.dispatch(urlPath);
+		DispatcherServlet.dispatch(urlPath, httpRequest);
 		
 		
 		if (msg instanceof HttpContent) {
