@@ -8,6 +8,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
+import io.netty.handler.codec.http.multipart.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,10 @@ import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.CharsetUtil;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * <pre>
  * 	 HTTP Channel Handler 설정 및 처리 
@@ -47,45 +52,52 @@ import io.netty.util.CharsetUtil;
  *
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
-public class MezzoHttpHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
-	private Logger logger  = LoggerFactory.getLogger(MezzoHttpHandler.class);
+	private Logger logger  = LoggerFactory.getLogger(MezzoHttpRequestHandler.class);
 	
-	HttpRequest httpRequest ;
+	private HttpRequest httpRequest ;
+    private HttpPostRequestDecoder decoder;
+    private static final HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); // Disk
+    private Map<String, Object> requestData = new HashMap<>();
 	
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
 
+	    // header 처리
 		if(msg instanceof HttpRequest) {
 			this.httpRequest = msg;
-			
 			if (HttpUtil.is100ContinueExpected(httpRequest)) {
                 send100Continue(ctx);
             }
-		}
-		
-		// TODO URL PATH 분기 처리
-        String urlPath = "";
-		DispatcherServlet.dispatch(urlPath, httpRequest);
-		
-		
-		if (msg instanceof HttpContent) {
-            if (msg instanceof LastHttpContent) {
-                logger.debug(LogMaker.accessMaker ,"LastHttpContent message received!! {}", httpRequest.uri());
 
-                LastHttpContent trailer = (LastHttpContent) msg;
-
-
-                if (!writeResponse(trailer, ctx)) {
-                    // If keep-alive is off, close the connection once the
-                    // content is fully written.
-                    ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+            HttpHeaders headers = httpRequest.headers();
+            if (!headers.isEmpty()) {
+                for (Map.Entry<String, String> h : headers) {
+                    String key = h.getKey();
+//                    if (usingHeader.contains(key)) {
+//                        reqData.put(key, h.getValue());
+//                    }
                 }
-                reset();
             }
         }
 		
-		
+        String urlPath = httpRequest.uri();
+		DispatcherServlet.dispatch(urlPath, requestData, httpRequest.method());
+
+		if (msg instanceof HttpContent) {
+            if (msg instanceof LastHttpContent) {
+
+                // POST data parameter parser
+                readPostData();
+                LastHttpContent trailer = (LastHttpContent) msg;
+
+                if (!writeResponse(trailer, ctx)) {
+                    ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+                }
+            }
+        }
+
 		this.reset();
 	}
 	
@@ -94,12 +106,50 @@ public class MezzoHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
         logger.info("요청 처리 완료");
         ctx.flush();
     }
-	
+
+    /**
+     * HttpRequest 초기화
+     */
 	private void reset() {
 		this.httpRequest = null;
     }
-	
-	
+
+
+
+    private void readPostData() {
+        try {
+            decoder = new HttpPostRequestDecoder(factory, httpRequest);
+            for (InterfaceHttpData data : decoder.getBodyHttpDatas()) {
+                if (InterfaceHttpData.HttpDataType.Attribute == data.getHttpDataType()) {
+                    try {
+                        Attribute attribute = (Attribute) data;
+                        requestData.put(attribute.getName(), attribute.getValue());
+                    }
+                    catch (IOException e) {
+                        logger.error("BODY Attribute: " + data.getHttpDataType().name(), e);
+                        return;
+                    }
+                }
+                else {
+                    logger.info("BODY data : " + data.getHttpDataType().name() + ": " + data);
+                }
+            }
+        } catch (HttpPostRequestDecoder.ErrorDataDecoderException e) {
+            logger.error("readPostData error = { } ",e);
+        } finally {
+            if (decoder != null) {
+                decoder.destroy();
+            }
+        }
+    }
+
+
+    /**
+     *  응답에 대한 요청 처리
+     * @param currentObj
+     * @param ctx
+     * @return
+     */
 	private boolean writeResponse(HttpObject currentObj, ChannelHandlerContext ctx) {
         
 		// Decide whether to close the connection or not.
@@ -107,27 +157,20 @@ public class MezzoHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
 
         // Build the response object.
         FullHttpResponse response = new DefaultFullHttpResponse(
-        		HTTP_1_1,
-                currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
-                Unpooled.copiedBuffer( "test", CharsetUtil.UTF_8));
-        
+                                                                HTTP_1_1,
+                                                                currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
+                                                                Unpooled.copiedBuffer( "test", CharsetUtil.UTF_8));
+
         //HttpHeaderNames.CONTENT_LENGTH;
         response.headers().set(CONTENT_TYPE, "application/json; charset=UTF-8");
-
         if (keepAlive) {
-            // Add 'Content-Length' header only for a keep-alive connection.
             response.headers().set(CONTENT_LENGTH, response.content().readableBytes());
-            // Add keep alive header as per:
-            // -
-            // http://www.w3.org/Protocols/HTTP/1.1/draft-ietf-http-v11-spec-01.html#Connection
             response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
         }
 
         // Write the response.
         ctx.write(response);
-        
         logger.debug(LogMaker.responseMaker ,"ResponseData = {}", response.content());
-
         return keepAlive;
     }
 	

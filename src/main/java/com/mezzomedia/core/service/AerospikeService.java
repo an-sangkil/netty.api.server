@@ -25,16 +25,16 @@ public class AerospikeService {
 	public <T> T save(T t) {
 		AerospikeProduct ap = new  AerospikeProduct();
 
-		ap.setId(3);
+		ap.setId(1);
 		ap.setProductId("mezzo");
 		ap.setImageUrl("http://");
 		ap.setPrice(500000);
 		ap.setDescription("Aerospike Test.....");
 
-		//this.aerospikeRepository.save(ap);
+		this.aerospikeRepository.save(ap);
 		AerospikeProduct aerospikeProduct = this.aerospikeRepository.findOne(3);
-
 		logger.debug("AerospikeProduct = {}" , aerospikeProduct.getId());
+
 
 //		List<AerospikeProduct> aerospikeProducts =  (List<AerospikeProduct>) this.aerospikeRepository.findAll();
 //		aerospikeProducts.forEach(productItem -> {
@@ -43,6 +43,10 @@ public class AerospikeService {
 //		});
 
 		return t;
+	}
+
+	public void findData () {
+
 	}
 
 

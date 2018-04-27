@@ -2,6 +2,7 @@ package com.mezzomedia.server.web.servlet.handler;
 
 import com.mezzomedia.core.service.MybatisService;
 import com.mezzomedia.core.service.RedisService;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Component;
 import com.mezzomedia.core.model.dto.AerospikeProduct;
 import com.mezzomedia.server.config.ApplicationContextProvider;
 import com.mezzomedia.core.service.AerospikeService;
+
+import java.util.Map;
+
+import static io.netty.handler.codec.http.HttpMethod.GET;
 
 /**
 
@@ -28,7 +33,7 @@ import com.mezzomedia.core.service.AerospikeService;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @Component
-public class DispatcherServlet extends  AbstractDispatcherParameterParser {
+public class DispatcherServlet {
 	
 	private static Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
 	
@@ -48,26 +53,28 @@ public class DispatcherServlet extends  AbstractDispatcherParameterParser {
 	/**
 	 * 
 	 * TODO : 요청 URI , URL PATH  확인후 분기 처리
-	 * @param urlPath
-	 * @param httpRequest
+     *
+	 * @param httpMethod
+     * @param requestDate
+     * @param urlPath
 	 */
-	public static void dispatch(String urlPath, HttpRequest httpRequest) {
+	public static void dispatch(String urlPath, Map<String,Object> requestDate , HttpMethod httpMethod) {
+
+
 		logger.debug("dispatch ........ handling....");
 		logger.debug("///////////////////////////////////////////////////////////////////");
 		logger.debug("//  AEROSPIKE TEST ");
 		logger.debug("///////////////////////////////////////////////////////////////////");
 		AerospikeService aerospikeService =ApplicationContextProvider.getBean(AerospikeService.class);
 		aerospikeService.save(new AerospikeProduct());
-
-
-		logger.debug("///////////////////////////////////////////////////////////////////");
-		logger.debug("//  Redis TEST");
-		logger.debug("///////////////////////////////////////////////////////////////////");
-
-		RedisService redisService = ApplicationContextProvider.getBean(RedisService.class);
-		redisService.save(new Object());
 //
+//		logger.debug("///////////////////////////////////////////////////////////////////");
+//		logger.debug("//  Redis TEST");
+//		logger.debug("///////////////////////////////////////////////////////////////////");
 //
+//		RedisService redisService = ApplicationContextProvider.getBean(RedisService.class);
+//		redisService.save(new Object());
+
 //		logger.debug("///////////////////////////////////////////////////////////////////");
 //		logger.debug("//  Mybatis  TEST");
 //		logger.debug("///////////////////////////////////////////////////////////////////");
@@ -76,5 +83,6 @@ public class DispatcherServlet extends  AbstractDispatcherParameterParser {
 		//mybatisService.findUserList();
 
 	}
+
 
 }

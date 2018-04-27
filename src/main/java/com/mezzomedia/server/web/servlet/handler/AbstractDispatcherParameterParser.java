@@ -1,5 +1,7 @@
 package com.mezzomedia.server.web.servlet.handler;
 
+import io.netty.handler.codec.http.HttpRequest;
+
 import java.util.Map;
 
 /**
@@ -12,6 +14,20 @@ import java.util.Map;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 public abstract class AbstractDispatcherParameterParser {
+
+    /**
+     * GET parameter Key, Value 형태 전환
+     * @param request
+     * @return
+     */
+    public  Map<String,Object> parameterGeneraterGET(HttpRequest request) {
+
+        String  uriStr = request.uri();
+
+
+
+        return null;
+    }
 
     /**
      * GET parameter Key, Value 형태 전환
