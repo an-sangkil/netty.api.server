@@ -8,6 +8,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
+import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.multipart.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,20 +20,14 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpObject;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpUtil;
-import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.CharsetUtil;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <pre>
@@ -55,16 +50,24 @@ import java.util.Map;
 public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
 	private Logger logger  = LoggerFactory.getLogger(MezzoHttpRequestHandler.class);
-	
-	private HttpRequest httpRequest ;
     private HttpPostRequestDecoder decoder;
+	private HttpRequest httpRequest ;
     private static final HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); // Disk
     private Map<String, Object> requestData = new HashMap<>();
-	
+
+    private static    Set<String> usingHeader = new HashSet<>();
+    static  {
+        usingHeader.add("TOKEN_");
+    }
+
+
+
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
 
+	    ///////////////////////////////////////////////////////////////////////////////
 	    // header 처리
+        ///////////////////////////////////////////////////////////////////////////////
 		if(msg instanceof HttpRequest) {
 			this.httpRequest = msg;
 			if (HttpUtil.is100ContinueExpected(httpRequest)) {
@@ -75,30 +78,58 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
             if (!headers.isEmpty()) {
                 for (Map.Entry<String, String> h : headers) {
                     String key = h.getKey();
-//                    if (usingHeader.contains(key)) {
-//                        reqData.put(key, h.getValue());
-//                    }
+                    if (usingHeader.contains(key)) {
+                        reqData.put(key, h.getValue());
+                    }
                 }
             }
         }
 		
-        String urlPath = httpRequest.uri();
-		DispatcherServlet.dispatch(urlPath, requestData, httpRequest.method());
 
+        ///////////////////////////////////////////////////////////////////////////////
+        // HttpContent ( Body ) 처리
+        ///////////////////////////////////////////////////////////////////////////////
 		if (msg instanceof HttpContent) {
             if (msg instanceof LastHttpContent) {
 
-                // POST data parameter parser
-                readPostData();
+
                 LastHttpContent trailer = (LastHttpContent) msg;
+
+                // GET POST data parameter parser
+                this.readGetData();
+                if(httpRequest.method().equals(HttpMethod.POST)) {
+                    this.readPostData();
+                }
+
+                // URI URL PATH  분리
+                String urlPath = httpRequest.uri();
+                URI uri =URI.create(urlPath);
+                uri.getPath();
+
+
+                ////////////////////////////////////////////////////
+                // Request Mapping 처리 .. Business logic 처리
+                ////////////////////////////////////////////////////
+                try {
+                    DispatcherServlet.dispatch(urlPath, requestData, httpRequest.method());
+                } finally {
+                    requestData.clear();
+                }
+
+                ////////////////////////////////////////////////////
+                // Response 처리
+                ////////////////////////////////////////////////////
 
                 if (!writeResponse(trailer, ctx)) {
                     ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
                 }
+
+                this.reset();
+
             }
         }
 
-		this.reset();
+
 	}
 	
 	@Override
@@ -115,9 +146,24 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
     }
 
 
+    /**
+     * GET Data 에 대한 parameter parser
+     */
+    private void readGetData() {
+        QueryStringDecoder queryStringDecoder = new QueryStringDecoder(httpRequest.uri(), CharsetUtil.UTF_8);
+        queryStringDecoder.parameters().forEach((k,v) -> {
+            requestData.put(k , v);
+        });
+    }
 
+
+    /**
+     * Post Data 에 대한 request Parameter parser
+     */
     private void readPostData() {
+       // HttpPostRequestDecoder decoder = null;
         try {
+
             decoder = new HttpPostRequestDecoder(factory, httpRequest);
             for (InterfaceHttpData data : decoder.getBodyHttpDatas()) {
                 if (InterfaceHttpData.HttpDataType.Attribute == data.getHttpDataType()) {
@@ -134,6 +180,8 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
                     logger.info("BODY data : " + data.getHttpDataType().name() + ": " + data);
                 }
             }
+
+
         } catch (HttpPostRequestDecoder.ErrorDataDecoderException e) {
             logger.error("readPostData error = { } ",e);
         } finally {
