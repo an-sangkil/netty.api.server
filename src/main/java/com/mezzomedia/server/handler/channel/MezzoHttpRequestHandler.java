@@ -79,7 +79,7 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
                 for (Map.Entry<String, String> h : headers) {
                     String key = h.getKey();
                     if (usingHeader.contains(key)) {
-                        reqData.put(key, h.getValue());
+                        requestData.put(key, h.getValue());
                     }
                 }
             }
