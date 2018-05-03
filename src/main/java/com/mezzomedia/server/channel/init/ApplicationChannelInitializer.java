@@ -41,7 +41,7 @@ public class ApplicationChannelInitializer extends ChannelInitializer<SocketChan
 		channelPipeline.addLast(new HttpObjectAggregator(65536));
 		channelPipeline.addLast(new HttpResponseEncoder());
 		channelPipeline.addLast(new HttpContentCompressor());
-		//channelPipeline.addLast(new ApiRequestParser());
+		channelPipeline.addLast(new ApiRequestParser());
 		channelPipeline.addLast(new LoggingHandler(LogLevel.DEBUG));
 		channelPipeline.addLast(new MezzoHttpRequestHandler());
 		

@@ -1,5 +1,7 @@
 package com.mezzomedia.server;
 
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -34,25 +36,24 @@ public class AdvertisementServer {
 	
 	
 	public void start (){
-			EventLoopGroup parentGroup = new NioEventLoopGroup(1);
+			EventLoopGroup parentGroup = new NioEventLoopGroup();
 			EventLoopGroup childGroup = new NioEventLoopGroup();
 			try{
 				ServerBootstrap sb = new ServerBootstrap();
 				sb.group(parentGroup, childGroup)
 					.channel(NioServerSocketChannel.class)
-					.option(ChannelOption.SO_BACKLOG, 100)						// 상세한 Channel 구현을 위해 옵션을 지정할 수 있습니다.
-					//.handler(new LoggingHandler(LogLevel.INFO))	
-					
+					.option(ChannelOption.SO_BACKLOG, 300)						// 상세한 Channel 구현을 위해 옵션을 지정할 수 있습니다.
+					.handler(new LoggingHandler(LogLevel.INFO))
 					.childHandler(new ChannelInitializer<SocketChannel>() {
+							@Override
+							protected void initChannel(SocketChannel ch) throws Exception {
+								System.out.print("test Channel inital ");
+							}
 
-						@Override
-						protected void initChannel(SocketChannel ch) throws Exception {
-							
-							System.out.print("test Channel inital ");
-							
-						}
-						
-					}).childHandler(new ApplicationChannelInitializer());			// 새롭게 액세스된 Channel을 처리합니다.   ChannelInitializer는 특별한 핸들러로 새로운 Channel의 환경 구성을 도와 주는 것이 목적입니다. 
+						})
+					.childHandler(new ApplicationChannelInitializer())			// 새롭게 액세스된 Channel을 처리합니다.   ChannelInitializer는 특별한 핸들러로 새로운 Channel의 환경 구성을 도와 주는 것이 목적입니다.
+
+				;
 
 				// 인커밍 커넥션을 액세스하기 위해 바인드하고 시작합니다.
 				ChannelFuture cf = sb.bind(tcpPort).sync();

@@ -2,6 +2,8 @@ package com.mezzomedia.server.handler.channel;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandler;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
  * <pre>
@@ -21,25 +23,13 @@ import io.netty.channel.ChannelHandlerContext;
  *
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
-@Deprecated
-public class ApiRequestParser implements ChannelHandler {
 
-	@Override
-	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-		// TODO Auto-generated method stub
+public class ApiRequestParser extends ChannelInboundHandlerAdapter {
 
+//	public void test() {
+//		System.out.println(" ApiRequestParser Call test(): ");
+//	}
+	public void test1() {
+		System.out.println(" ApiRequestParser Call test1() : ");
 	}
-
-	@Override
-	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
 }

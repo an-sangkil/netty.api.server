@@ -1,9 +1,6 @@
 package com.mezzomedia.server.web.servlet.handler;
 
-import com.mezzomedia.core.service.MybatisService;
-import com.mezzomedia.core.service.RedisService;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +12,6 @@ import com.mezzomedia.server.config.ApplicationContextProvider;
 import com.mezzomedia.core.service.AerospikeService;
 
 import java.util.Map;
-
-import static io.netty.handler.codec.http.HttpMethod.GET;
 
 /**
 
@@ -33,20 +28,21 @@ import static io.netty.handler.codec.http.HttpMethod.GET;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @Component
-public class DispatcherServlet {
+public class Dispatcher {
 	
-	private static Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
+	private static Logger logger = LoggerFactory.getLogger(Dispatcher.class);
 	
 	@Autowired private ApplicationContextProvider applicationContextProvider;
 	
 	private static ApplicationContext APPLICATION_SPRING_CONTEXT;
-	
+
+
 	@Autowired
 	public void initializer(ApplicationContext springContext) {
-		APPLICATION_SPRING_CONTEXT = springContext;
-		applicationContextProvider.setApplicationContext(springContext);
-		
-		logger.info("springContext = {} " ,  APPLICATION_SPRING_CONTEXT);
+//		APPLICATION_SPRING_CONTEXT = springContext;
+//		applicationContextProvider.setApplicationContext(springContext);
+//
+//		logger.info("springContext = {} " ,  APPLICATION_SPRING_CONTEXT);
 		logger.info("applicationContextProvider = {} " ,  applicationContextProvider);
 	}
 	
@@ -59,7 +55,6 @@ public class DispatcherServlet {
      * @param urlPath
 	 */
 	public static void dispatch(String urlPath, Map<String,Object> requestDate , HttpMethod httpMethod) {
-
 
 		logger.debug("dispatch ........ handling....");
 		logger.debug("///////////////////////////////////////////////////////////////////");

@@ -8,13 +8,15 @@ import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
+import com.mezzomedia.server.web.servlet.filter.core.FilterManager;
+import com.mezzomedia.server.web.servlet.intercepter.IntercepterFilter;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.multipart.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mezzomedia.server.config.LogMaker;
-import com.mezzomedia.server.web.servlet.handler.DispatcherServlet;
+import com.mezzomedia.server.web.servlet.handler.Dispatcher;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -47,7 +49,7 @@ import java.util.Set;
  *
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
-public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> implements RequestParameterParser {
 
 	private Logger logger  = LoggerFactory.getLogger(MezzoHttpRequestHandler.class);
     private HttpPostRequestDecoder decoder;
@@ -60,10 +62,12 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
         usingHeader.add("TOKEN_");
     }
 
-
-
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
+
+        // 인터 셉터 실행
+        new IntercepterFilter(msg);
+
 
 	    ///////////////////////////////////////////////////////////////////////////////
 	    // header 처리
@@ -92,11 +96,10 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
 		if (msg instanceof HttpContent) {
             if (msg instanceof LastHttpContent) {
 
-
                 LastHttpContent trailer = (LastHttpContent) msg;
 
                 // GET POST data parameter parser
-                this.readGetData();
+                this.readGetData(httpRequest,requestData);
                 if(httpRequest.method().equals(HttpMethod.POST)) {
                     this.readPostData();
                 }
@@ -111,7 +114,12 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
                 // Request Mapping 처리 .. Business logic 처리
                 ////////////////////////////////////////////////////
                 try {
-                    DispatcherServlet.dispatch(urlPath, requestData, httpRequest.method());
+
+
+                    Dispatcher.dispatch(urlPath, requestData, httpRequest.method());
+
+
+
                 } finally {
                     requestData.clear();
                 }
@@ -124,6 +132,8 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
                     ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
                 }
 
+
+                //
                 this.reset();
 
             }
@@ -147,21 +157,10 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
 
 
     /**
-     * GET Data 에 대한 parameter parser
-     */
-    private void readGetData() {
-        QueryStringDecoder queryStringDecoder = new QueryStringDecoder(httpRequest.uri(), CharsetUtil.UTF_8);
-        queryStringDecoder.parameters().forEach((k,v) -> {
-            requestData.put(k , v);
-        });
-    }
-
-
-    /**
      * Post Data 에 대한 request Parameter parser
      */
-    private void readPostData() {
-       // HttpPostRequestDecoder decoder = null;
+    public void readPostData() {
+        // HttpPostRequestDecoder decoder = null;
         try {
 
             decoder = new HttpPostRequestDecoder(factory, httpRequest);
@@ -210,7 +209,7 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
                                                                 Unpooled.copiedBuffer( "test", CharsetUtil.UTF_8));
 
         //HttpHeaderNames.CONTENT_LENGTH;
-        response.headers().set(CONTENT_TYPE, "application/json; charset=UTF-8");
+        response.headers().set(CONTENT_TYPE, "application/text; charset=UTF-8");
         if (keepAlive) {
             response.headers().set(CONTENT_LENGTH, response.content().readableBytes());
             response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
@@ -226,6 +225,5 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, CONTINUE);
         ctx.write(response);
     }
-
 
 }
