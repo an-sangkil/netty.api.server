@@ -1,4 +1,4 @@
-package com.mezzomedia.server.web.servlet.filter;
+package com.mezzomedia.server.web.servlet.filter.core;
 
 import io.netty.handler.codec.http.HttpRequest;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * <pre>
  * Description :
- * @author mezzomedia
+ * @author skan
  * @since 2018.05.02
  * @version
  *
@@ -18,6 +18,7 @@ public class FilterChain {
 
     private List<Filter>  filters = new ArrayList<>();
     private Target target;
+    private Class<?> cls;
 
     public void addFilter(Filter filter) {
         filters.add(filter);
@@ -36,6 +37,8 @@ public class FilterChain {
         }
         // 필터 완료 후 실행될  Class 호출
         target.execute(httpRequest);
+
+        cls.getMethods();
     }
 
     public void setTarget(Target target){

@@ -1,11 +1,11 @@
-package com.mezzomedia.server.web.servlet.filter;
+package com.mezzomedia.server.web.servlet.filter.core;
 
 import io.netty.handler.codec.http.HttpRequest;
 
 /**
  * <pre>
  * Description :
- * @author mezzomedia
+ * @author skan
  * @since 2018.05.02
  * @version
  *

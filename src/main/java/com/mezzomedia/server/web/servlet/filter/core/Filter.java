@@ -1,4 +1,4 @@
-package com.mezzomedia.server.web.servlet.filter;
+package com.mezzomedia.server.web.servlet.filter.core;
 
 import com.mezzomedia.server.web.servlet.handler.HandlerInterceptor;
 import io.netty.handler.codec.http.HttpRequest;
@@ -6,7 +6,7 @@ import io.netty.handler.codec.http.HttpRequest;
 /**
  * <pre>
  * Description :
- * @author mezzomedia
+ * @author skan
  * @since 2018.05.02
  * @version
  *
@@ -15,5 +15,7 @@ import io.netty.handler.codec.http.HttpRequest;
 public interface Filter {
 
     public void execute(HttpRequest httpRequest);
+
+
 
 }
