@@ -49,14 +49,12 @@ import java.util.Set;
  *
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
-public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> implements RequestParameterParser {
+public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
 
 	private Logger logger  = LoggerFactory.getLogger(MezzoHttpRequestHandler.class);
-    private HttpPostRequestDecoder decoder;
-	private HttpRequest httpRequest ;
-    private static final HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); // Disk
+	private HttpRequest httpRequest;
+	private HttpResponse httpResponse;
     private Map<String, Object> requestData = new HashMap<>();
-
     private static    Set<String> usingHeader = new HashSet<>();
     static  {
         usingHeader.add("TOKEN_");
@@ -64,10 +62,6 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
-
-        // 인터 셉터 실행
-        new IntercepterFilter(msg);
-
 
 	    ///////////////////////////////////////////////////////////////////////////////
 	    // header 처리
@@ -88,64 +82,63 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
                 }
             }
         }
-		
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // GET POST data parameter parser
+        ///////////////////////////////////////////////////////////////////////////////
+        this.readGetData(httpRequest,requestData);
+        if(httpRequest.method().equals(HttpMethod.POST)) {
+            this.readPostData(httpRequest, requestData);
+        }
+
 
         ///////////////////////////////////////////////////////////////////////////////
         // HttpContent ( Body ) 처리
         ///////////////////////////////////////////////////////////////////////////////
+        LastHttpContent lastHttpContent = null;
 		if (msg instanceof HttpContent) {
             if (msg instanceof LastHttpContent) {
-
-                LastHttpContent trailer = (LastHttpContent) msg;
-
-                // GET POST data parameter parser
-                this.readGetData(httpRequest,requestData);
-                if(httpRequest.method().equals(HttpMethod.POST)) {
-                    this.readPostData();
-                }
-
-                // URI URL PATH  분리
-                String urlPath = httpRequest.uri();
-                URI uri =URI.create(urlPath);
-                uri.getPath();
-
-
-                ////////////////////////////////////////////////////
-                // Request Mapping 처리 .. Business logic 처리
-                ////////////////////////////////////////////////////
-                try {
-
-
-                    Dispatcher.dispatch(urlPath, requestData, httpRequest.method());
-
-
-
-                } finally {
-                    requestData.clear();
-                }
-
-                ////////////////////////////////////////////////////
-                // Response 처리
-                ////////////////////////////////////////////////////
-
-                if (!writeResponse(trailer, ctx)) {
-                    ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
-                }
-
-
-                //
-                this.reset();
-
+                lastHttpContent = (LastHttpContent) msg;        
             }
         }
+
+
+        ////////////////////////////////////////////////////
+        // Request Mapping 처리 .. Business logic 처리
+        ////////////////////////////////////////////////////
+        try {
+            // 인터 셉터 실행
+            new IntercepterFilter(httpRequest, null);
+
+		} finally {
+
+            requestData.clear();
+        }
+
+        ////////////////////////////////////////////////////
+        // Response 처리
+        ////////////////////////////////////////////////////
+        if (!writeResponse(lastHttpContent, ctx)) {
+            ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+        }
+
+        //
+        this.reset();
 
 
 	}
 	
 	@Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        logger.info("요청 처리 완료");
+        logger.info("데이터 수신 완료 요청 처리 완료");
         ctx.flush();
+    }
+
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception {
+        ctx.fireExceptionCaught(cause);
     }
 
     /**
@@ -156,39 +149,7 @@ public class MezzoHttpRequestHandler extends SimpleChannelInboundHandler<FullHtt
     }
 
 
-    /**
-     * Post Data 에 대한 request Parameter parser
-     */
-    public void readPostData() {
-        // HttpPostRequestDecoder decoder = null;
-        try {
 
-            decoder = new HttpPostRequestDecoder(factory, httpRequest);
-            for (InterfaceHttpData data : decoder.getBodyHttpDatas()) {
-                if (InterfaceHttpData.HttpDataType.Attribute == data.getHttpDataType()) {
-                    try {
-                        Attribute attribute = (Attribute) data;
-                        requestData.put(attribute.getName(), attribute.getValue());
-                    }
-                    catch (IOException e) {
-                        logger.error("BODY Attribute: " + data.getHttpDataType().name(), e);
-                        return;
-                    }
-                }
-                else {
-                    logger.info("BODY data : " + data.getHttpDataType().name() + ": " + data);
-                }
-            }
-
-
-        } catch (HttpPostRequestDecoder.ErrorDataDecoderException e) {
-            logger.error("readPostData error = { } ",e);
-        } finally {
-            if (decoder != null) {
-                decoder.destroy();
-            }
-        }
-    }
 
 
     /**

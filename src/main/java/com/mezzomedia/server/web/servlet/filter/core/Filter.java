@@ -2,6 +2,7 @@ package com.mezzomedia.server.web.servlet.filter.core;
 
 import com.mezzomedia.server.web.servlet.handler.HandlerInterceptor;
 import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponse;
 
 /**
  * <pre>
@@ -14,8 +15,18 @@ import io.netty.handler.codec.http.HttpRequest;
  */
 public interface Filter {
 
-    public void execute(HttpRequest httpRequest);
+    /**
+     * 업무 시작 전처리 작업
+     * @param httpRequest
+     * @return
+     */
+    public boolean  execute(HttpRequest httpRequest, HttpResponse httpResponse);
 
-
+    /**
+     * 업무 후처리 작업
+     * @param httpRequest
+     * @param httpResponse
+     */
+    public void postProcessing(HttpRequest httpRequest, HttpResponse httpResponse) ;
 
 }

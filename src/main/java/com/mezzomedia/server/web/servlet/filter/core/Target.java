@@ -3,7 +3,11 @@ package com.mezzomedia.server.web.servlet.filter.core;
 import com.mezzomedia.server.web.servlet.handler.Dispatcher;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.util.HashMap;
 
 /**
@@ -17,10 +21,20 @@ import java.util.HashMap;
  */
 public class Target {
 
+    Logger logger = LoggerFactory.getLogger(Target.class);
 
     //Target object is the request handler
-    public void execute (HttpRequest httpRequest) {
-        System.out.println("target execute");
-        Dispatcher.dispatch("",new HashMap<>(),HttpMethod.GET);
+    public void execute(HttpRequest httpRequest, HttpResponse response) {
+
+        logger.debug("target execute Start !!!!!!!!!!!!!!!!!! ");
+        // URI URL PATH  분리
+        String urlPath = httpRequest.uri();
+        URI uri =URI.create(urlPath);
+        HttpMethod method = httpRequest.method();
+
+        Dispatcher.dispatch(uri.getPath() , new HashMap<>() , method);
+
+
+
     }
 }

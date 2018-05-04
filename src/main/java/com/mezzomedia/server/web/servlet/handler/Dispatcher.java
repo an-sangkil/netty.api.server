@@ -54,7 +54,7 @@ public class Dispatcher {
      * @param requestDate
      * @param urlPath
 	 */
-	public static void dispatch(String urlPath, Map<String,Object> requestDate , HttpMethod httpMethod) {
+	public static <T> T dispatch(String urlPath, Map<String,Object> requestDate , HttpMethod httpMethod) {
 
 		logger.debug("dispatch ........ handling....");
 		logger.debug("///////////////////////////////////////////////////////////////////");
@@ -62,7 +62,11 @@ public class Dispatcher {
 		logger.debug("///////////////////////////////////////////////////////////////////");
 		AerospikeService aerospikeService =ApplicationContextProvider.getBean(AerospikeService.class);
 		aerospikeService.save(new AerospikeProduct());
-//
+
+
+
+
+
 //		logger.debug("///////////////////////////////////////////////////////////////////");
 //		logger.debug("//  Redis TEST");
 //		logger.debug("///////////////////////////////////////////////////////////////////");
@@ -77,6 +81,7 @@ public class Dispatcher {
 //		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
 		//mybatisService.findUserList();
 
+		return null;
 	}
 
 

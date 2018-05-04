@@ -46,7 +46,8 @@ public class AerospikeService {
 	}
 
 	public void findData () {
-
+		List<AerospikeProduct> aerospikeProducts = (List<AerospikeProduct>) this.aerospikeRepository.findAll();
+		logger.debug("aerospikeProducts size", aerospikeProducts .size());
 	}
 
 

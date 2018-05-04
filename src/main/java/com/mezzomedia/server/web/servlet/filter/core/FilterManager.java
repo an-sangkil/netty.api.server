@@ -1,6 +1,7 @@
 package com.mezzomedia.server.web.servlet.filter.core;
 
 import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponse;
 
 /**
  * <pre>
@@ -30,9 +31,10 @@ public class FilterManager {
     /**
      * Filter 실행
      * @param request
+     * @param response
      */
-    public void filterRequest(HttpRequest request){
-        filterChain.execute(request);
+    public void filterRequest(HttpRequest request, HttpResponse response){
+        filterChain.execute(request, response);
     }
 
 

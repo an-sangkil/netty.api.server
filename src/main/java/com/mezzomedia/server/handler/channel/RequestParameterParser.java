@@ -2,10 +2,10 @@ package com.mezzomedia.server.handler.channel;
 
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.handler.codec.http.multipart.Attribute;
-import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
-import io.netty.handler.codec.http.multipart.InterfaceHttpData;
+import io.netty.handler.codec.http.multipart.*;
 import io.netty.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,16 +21,23 @@ import java.util.Map;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 public interface RequestParameterParser {
-
+    /**
+     * METHOD  GET  요청 파라미터 파싱
+     * @param httpRequest
+     * @param requestData
+     */
+    public void  readGetData(HttpRequest httpRequest, Map<String,Object> requestData ) ;
 
     /**
-     * GET Data 에 대한 parameter parser
+     * METHOD  POST  요청 파라미터 파싱
+     * @param httpRequest
+     * @param requestData
      */
-    public default void  readGetData(HttpRequest httpRequest, Map<String,Object> requestData ) {
-        QueryStringDecoder queryStringDecoder = new QueryStringDecoder(httpRequest.uri(), CharsetUtil.UTF_8);
-        queryStringDecoder.parameters().forEach((k,v) -> {
-            requestData.put(k , v);
-        });
+    public void  readPostData(HttpRequest httpRequest, Map<String,Object> requestData ) ;
+
+
+    public default void responseData () {
+
     }
 
 

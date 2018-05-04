@@ -1,6 +1,7 @@
 package com.mezzomedia.server.web.servlet.filter.core;
 
 import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +31,22 @@ public class FilterChain {
      * 최종 execute , request handler
      * @param httpRequest
      */
-    public void execute(HttpRequest httpRequest) {
-        // 필터 순차 실행
-        for (Filter filter : filters ) {
-            filter.execute(httpRequest);
-        }
-        // 필터 완료 후 실행될  Class 호출
-        target.execute(httpRequest);
+    public void execute(HttpRequest httpRequest , HttpResponse response) {
 
-        cls.getMethods();
+        // 1. 필터 전차리 순차 실행
+        for (Filter filter : filters ) {
+            filter.execute(httpRequest, response);
+        }
+
+        // 필터 완료 후 실행될  Class 호출
+        target.execute(httpRequest, response);
+
+        // 2. 필터 후처리 순차실행
+        for (Filter filter: filters)  {
+            filter.postProcessing(httpRequest, response);
+        }
+
+        //cls.getMethods();
     }
 
     public void setTarget(Target target){
