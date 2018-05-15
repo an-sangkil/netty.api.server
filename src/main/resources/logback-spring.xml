@@ -6,17 +6,17 @@
 	<!-- ################################################ -->
 	<!-- # 일반 롤링 파일 최대 30일 -->
 	<!-- ################################################ -->
-	<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="DAILY_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/%d{yyyyMM}/application1.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+			<fileNamePattern>logs/%d{yyyy,aux}/%d{MM,aux}/%d{dd,aux}/ad.middleware.application.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
 		</filter>
 		<encoder>
-			<pattern>%msg %n</pattern>
+			<Pattern>%d{yyyy:MM:dd-HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
 		</encoder>
 	</appender>
 	
@@ -24,15 +24,14 @@
 	<!-- ################################################ -->
 	<!-- # ERROR: 파일 최대 30일 -->
 	<!-- ################################################ -->
-	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="AD_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>logs/error/error.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/error/join_error_%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>logs/error/application.error.%d{yyyy-MM-dd}.log</FileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
-			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n
-			</Pattern>
+			<Pattern>%d{yyyy:MM:dd-HH:mm:ss} [%thread] %-5level %logger{35} - %msg %n</Pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
 			<level>error</level>
@@ -48,11 +47,11 @@
 	<appender name="REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>logs/request/request.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/request/request_%d{yyyy-MM-dd_HH}.log</FileNamePattern>
+			<FileNamePattern>logs/request/request_%d{yyyy-MM-dd_HH}.log.tar.gz</FileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
-			<Pattern>%msg %n</Pattern>
+			<Pattern>%d{yyyy:MM:dd-HH:mm:ss} %t %msg %n</Pattern>
 		</encoder>
 		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
 			<evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
@@ -67,11 +66,11 @@
 	<appender name="RESPONSE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>logs/response/response.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/response/response_%d{yyyy-MM-dd_HH}.tar.gz</FileNamePattern>
+			<FileNamePattern>logs/response/response_%d{yyyy-MM-dd_HH}.log.tar.gz</FileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
-			<Pattern>%msg %n</Pattern>
+			<Pattern>%d{yyyy.MM.dd HH:mm:ss} \t %msg %n</Pattern>
 		</encoder>
 		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
 			<evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
@@ -88,11 +87,9 @@
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
-<!-- 		<appender-ref ref="FILE" /> -->
-		
-		<appender-ref ref="ERROR"/>
+		<appender-ref ref="AD_ERROR"/>
 		<appender-ref ref="REQUEST"/>
 		<appender-ref ref="RESPONSE"/>
-		<appender-ref ref="dailyRollingFileAppender" />
+		<appender-ref ref="DAILY_ROLLING_FILE_APPENDER" />
 	</root>
 </configuration>

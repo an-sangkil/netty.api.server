@@ -32,6 +32,9 @@ public class LogMaker {
 	 * <pre>
 	 * Class Name  : LogMaker.java
 	 * Description : logbak 에서 사용될 Maker Name
+	 * 
+	 * example : logger.debug(LogMaker.responseMaker ,"ResponseData = {}", response.content());
+	 * 
 	 * </pre>
 	 */
 	public enum LogMakerCode {

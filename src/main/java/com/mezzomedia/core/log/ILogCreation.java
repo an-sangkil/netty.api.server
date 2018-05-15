@@ -1,5 +1,7 @@
 package com.mezzomedia.core.log;
 
+import com.mezzomedia.server.config.LogMaker;
+
 /**
  * <pre>
  * Description :
@@ -10,4 +12,26 @@ package com.mezzomedia.core.log;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 public interface ILogCreation {
+	
+	/**
+	 * 
+	 * @param message
+	 */
+	public void write(String message);
+	
+	/**
+	 * 
+	 * @param pattern
+	 * @param message
+	 */
+	public void write(String pattern , String message);
+	
+	
+	/**
+	 * 
+	 * @param pattern
+	 * @param message
+	 */
+	public void write(LogMaker logMaker ,String pattern , String message);
+	
 }

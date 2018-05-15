@@ -35,7 +35,10 @@ public interface RequestParameterParser {
      */
     public void  readPostData(HttpRequest httpRequest, Map<String,Object> requestData ) ;
 
-
+    
+    /**
+     * default Response data 생성  
+     */
     public default void responseData () {
 
     }
