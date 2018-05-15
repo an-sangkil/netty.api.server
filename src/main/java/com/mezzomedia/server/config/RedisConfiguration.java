@@ -14,7 +14,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * <pre>
@@ -29,7 +28,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 @EnableAutoConfiguration
 @EnableTransactionManagement
-@EnableRedisRepositories(basePackages = {"com.mezzomedia.repository.redis"})
+@EnableRedisRepositories(basePackageClasses = {com.mezzomedia.core.repository.redis.RedisRepository.class})
 public class RedisConfiguration {
 
     @Value("${spring.redis.host:192.168.99.100}")
@@ -40,11 +39,6 @@ public class RedisConfiguration {
     @Bean(name="redisConnectionFactory")
     @Primary
     public RedisConnectionFactory connectionFactory() {
-
-        JedisPoolConfig poolConfig = new JedisPoolConfig();
-        poolConfig.setMaxTotal(5);
-        poolConfig.setTestOnBorrow(true);
-        poolConfig.setTestOnReturn(true);
 
         JedisConnectionFactory  jedisConnectionFactory =  new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(redisHost);

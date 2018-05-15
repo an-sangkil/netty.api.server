@@ -130,7 +130,7 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
 	
 	@Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        logger.info("데이터 수신 완료 요청 처리 완료");
+        logger.info("데이터 수신 완료 ");
         ctx.flush();
     }
 

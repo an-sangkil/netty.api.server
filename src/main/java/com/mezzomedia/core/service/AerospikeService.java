@@ -1,6 +1,7 @@
 package com.mezzomedia.core.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.mezzomedia.core.repository.aerospike.AerospikeTestRepository;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class AerospikeService {
 	public <T> T save(T t) {
 		AerospikeProduct ap = new  AerospikeProduct();
 
+		//org.apache.log4j.Logger;
+		//org.apache.logging.log4j.Logger;
 		ap.setId(1);
 		ap.setProductId("mezzo");
 		ap.setImageUrl("http://");
@@ -32,8 +35,12 @@ public class AerospikeService {
 		ap.setDescription("Aerospike Test.....");
 
 		this.aerospikeRepository.save(ap);
+
 		AerospikeProduct aerospikeProduct = this.aerospikeRepository.findOne(3);
-		logger.debug("AerospikeProduct = {}" , aerospikeProduct.getId());
+
+		// Spring Data 2 version
+		// Optional<AerospikeProduct> aerospikeProduct  = this.aerospikeRepository.findById(1);
+		// logger.debug("AerospikeProduct = {}" , aerospikeProduct.get());
 
 
 //		List<AerospikeProduct> aerospikeProducts =  (List<AerospikeProduct>) this.aerospikeRepository.findAll();
