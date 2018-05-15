@@ -16,10 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mezzomedia.server.config.LogMaker;
-import com.mezzomedia.server.config.LogMaker.LogMakerCode;
 import com.mezzomedia.server.web.servlet.handler.Dispatcher;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,7 +26,6 @@ import io.netty.util.CharsetUtil;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,7 +86,6 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
         ///////////////////////////////////////////////////////////////////////////////
         // GET POST data parameter parser
         ///////////////////////////////////////////////////////////////////////////////
-		logger.debug(LogMaker.accessMaker,"Request URL = {}", httpRequest.uri());
         this.readGetData(httpRequest,requestData);
         if(httpRequest.method().equals(HttpMethod.POST)) {
             this.readPostData(httpRequest, requestData);
@@ -134,7 +130,7 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
 	
 	@Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        logger.info("데이터 수신 완료 요청 처리 완료");
+        logger.info("데이터 수신 완료 ");
         ctx.flush();
     }
 
@@ -182,10 +178,7 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
 
         // Write the response.
         ctx.write(response);
-        
-        
-        String responseData =  ((ByteBuf)response.content()).toString(Charset.defaultCharset());
-        logger.debug(LogMaker.responseMaker ,"response data = {}", responseData );
+        logger.debug(LogMaker.responseMaker ,"ResponseData = {}", response.content());
         return keepAlive;
     }
 	
