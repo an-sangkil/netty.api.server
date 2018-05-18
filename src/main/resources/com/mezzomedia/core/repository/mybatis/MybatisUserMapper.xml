@@ -2,7 +2,7 @@
 <mapper namespace="com.mezzomedia.core.repository.mybatis.MybatisUserMapper">
 
 
-	<select id="userList" resultType="User">
+	<select id="userList" resultType="com.mezzomedia.core.model.domain.object.User">
 		SELECT
 		 user_id AS id,
 		 user_name AS userName
