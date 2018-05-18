@@ -1,4 +1,4 @@
-package com.mezzomedia.server.web.servlet.handler;
+package com.mezzomedia.server.web.servlet;
 
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.mezzomedia.core.model.dto.AerospikeProduct;
 import com.mezzomedia.server.config.ApplicationContextProvider;
 import com.mezzomedia.core.service.AerospikeService;
+import com.mezzomedia.core.service.MybatisService;
 
 import java.util.Map;
 
@@ -78,8 +79,8 @@ public class Dispatcher {
 //		logger.debug("//  Mybatis  TEST");
 //		logger.debug("///////////////////////////////////////////////////////////////////");
 //
-//		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
-		//mybatisService.findUserList();
+		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
+		mybatisService.findUserList();
 
 		return null;
 	}

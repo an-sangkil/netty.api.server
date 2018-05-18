@@ -1,11 +1,12 @@
 package com.mezzomedia.server.web.servlet.filter.core;
 
-import com.mezzomedia.server.web.servlet.handler.Dispatcher;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mezzomedia.server.web.servlet.Dispatcher;
 
 import java.net.URI;
 import java.util.HashMap;

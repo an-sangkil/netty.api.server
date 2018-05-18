@@ -1,4 +1,4 @@
-package com.mezzomedia.server.web.servlet.intercepter;
+package com.mezzomedia.server.web.servlet.filter.intercepter;
 
 import com.mezzomedia.server.web.servlet.filter.AuthenticationFilter;
 import com.mezzomedia.server.web.servlet.filter.CorsFilter;
