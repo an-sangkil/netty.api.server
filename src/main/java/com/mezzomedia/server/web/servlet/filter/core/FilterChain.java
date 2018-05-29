@@ -35,7 +35,12 @@ public class FilterChain {
 
         // 1. 필터 전차리 순차 실행
         for (Filter filter : filters ) {
-            filter.execute(httpRequest, response);
+            boolean preBoolean =  filter.execute(httpRequest, response);
+            if(!preBoolean) {
+            	
+            	
+            	break;
+            }
         }
 
         // 필터 완료 후 실행될  Class 호출
