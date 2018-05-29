@@ -21,14 +21,19 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @since 2018. 2. 27.
  * @version
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * 			Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 
 public class ApiRequestParser extends ChannelInboundHandlerAdapter {
 
-//	public void test() {
-//		System.out.println(" ApiRequestParser Call test(): ");
+//	@Override
+//	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//		ctx.channel();
 //	}
+
+	// public void test() {
+	// System.out.println(" ApiRequestParser Call test(): ");
+	// }
 	public void test1() {
 		System.out.println(" ApiRequestParser Call test1() : ");
 	}

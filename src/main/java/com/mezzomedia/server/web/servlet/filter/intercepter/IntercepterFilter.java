@@ -18,8 +18,7 @@ import io.netty.handler.codec.http.HttpResponse;
  */
 public class IntercepterFilter {
 
-    public  IntercepterFilter(HttpRequest request , HttpResponse response
-    ) {
+    public  IntercepterFilter(HttpRequest request , HttpResponse response) throws Exception {
 
         FilterManager filterManager = new FilterManager(new Target());
 

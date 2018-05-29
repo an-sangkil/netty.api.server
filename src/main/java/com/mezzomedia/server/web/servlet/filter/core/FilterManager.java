@@ -33,7 +33,7 @@ public class FilterManager {
      * @param request
      * @param response
      */
-    public void filterRequest(HttpRequest request, HttpResponse response){
+    public void filterRequest(HttpRequest request, HttpResponse response) throws Exception{
         filterChain.execute(request, response);
     }
 

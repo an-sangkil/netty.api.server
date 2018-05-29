@@ -30,12 +30,18 @@ public class FilterChain {
      *
      * 최종 execute , request handler
      * @param httpRequest
+     * @throws Exception 
      */
-    public void execute(HttpRequest httpRequest , HttpResponse response) {
+    public void execute(HttpRequest httpRequest , HttpResponse response) throws Exception {
 
         // 1. 필터 전차리 순차 실행
         for (Filter filter : filters ) {
-            filter.execute(httpRequest, response);
+            boolean preBoolean =  filter.execute(httpRequest, response);
+            if(!preBoolean) {
+            	
+            	//throw new Exception(" Filter execute : ");
+            	
+            }
         }
 
         // 필터 완료 후 실행될  Class 호출

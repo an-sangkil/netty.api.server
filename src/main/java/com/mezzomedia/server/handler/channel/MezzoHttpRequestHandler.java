@@ -142,7 +142,9 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {
+    	
         ctx.fireExceptionCaught(cause);
+        ctx.close();
     }
 
     /**
