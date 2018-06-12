@@ -1,10 +1,15 @@
 package com.mezzomedia.server.web.servlet.filter.core;
 
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.LastHttpContent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mezzomedia.server.function.ServerResponse;
 
 /**
  * <pre>
@@ -24,7 +29,11 @@ public class FilterChain {
     public void addFilter(Filter filter) {
         filters.add(filter);
     }
-
+   
+    public void setTarget(Target target){
+        this.target = target;
+    }
+    
     /**
      * Filter 순차 실행
      *
@@ -32,32 +41,31 @@ public class FilterChain {
      * @param httpRequest
      * @throws Exception 
      */
-    public void execute(HttpRequest httpRequest , HttpResponse response) throws Exception {
-
-        // 1. 필터 전차리 순차 실행
+	public void execute(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx) throws Exception {
+		
+		// 1. 필터 전차리 순차 실행
         for (Filter filter : filters ) {
-            boolean preBoolean =  filter.execute(httpRequest, response);
+            boolean preBoolean =  filter.execute(httpRequest, lastHttpContent);
             if(!preBoolean) {
             	
-            	//throw new Exception(" Filter execute : ");
+            	//ServerResponse.status(HttpResponseStatus.INTERNAL_SERVER_ERROR).writeTo(currentObj, ctx, o);
             	
+            	throw new Exception(" Filter execute : ");
             }
         }
 
         // 필터 완료 후 실행될  Class 호출
-        target.execute(httpRequest, response);
+        target.execute(httpRequest, lastHttpContent, ctx);
 
+        
         // 2. 필터 후처리 순차실행
         for (Filter filter: filters)  {
-            filter.postProcessing(httpRequest, response);
+            filter.postProcessing(httpRequest, lastHttpContent);
         }
 
         //cls.getMethods();
-    }
-
-    public void setTarget(Target target){
-        this.target = target;
-    }
+		
+	}
 
 
 

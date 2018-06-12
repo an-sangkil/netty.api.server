@@ -1,7 +1,9 @@
 package com.mezzomedia.server.web.servlet.filter.core;
 
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.LastHttpContent;
 
 /**
  * <pre>
@@ -28,14 +30,16 @@ public class FilterManager {
         filterChain.addFilter(filter);
     }
 
+  
     /**
      * Filter 실행
      * @param request
      * @param response
+     * @throws Exception 
      */
-    public void filterRequest(HttpRequest request, HttpResponse response) throws Exception{
-        filterChain.execute(request, response);
-    }
+	public void filterRequest(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx) throws Exception {
+		filterChain.execute(httpRequest, lastHttpContent, ctx);
+	}
 
 
 

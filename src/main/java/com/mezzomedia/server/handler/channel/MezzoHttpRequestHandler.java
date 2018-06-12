@@ -58,7 +58,6 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
 
 	private Logger logger  = LoggerFactory.getLogger(MezzoHttpRequestHandler.class);
 	private HttpRequest httpRequest;
-	private HttpResponse httpResponse;
     private Map<String, Object> requestData = new HashMap<>();
     private static    Set<String> usingHeader = new HashSet<>();
     static  {
@@ -112,11 +111,9 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
         // Request Mapping 처리 .. Business logic 처리
         ////////////////////////////////////////////////////
         try {
-            // 인터 셉터 실행
         	
-        	FullHttpResponse httpResponse =  ServerResponse.isOk().body();
-            new IntercepterFilter(httpRequest, httpResponse);
-            
+            // 인터 셉터 실행
+            new IntercepterFilter(httpRequest, lastHttpContent, ctx);
 
 		} finally {
 

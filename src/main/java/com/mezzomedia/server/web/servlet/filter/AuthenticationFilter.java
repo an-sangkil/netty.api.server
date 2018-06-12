@@ -4,6 +4,7 @@ import com.mezzomedia.server.web.servlet.filter.core.Filter;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.LastHttpContent;
 
 /**
  * <pre>
@@ -17,7 +18,7 @@ import io.netty.handler.codec.http.HttpResponse;
 public class AuthenticationFilter implements Filter {
 
         @Override
-    public boolean execute(HttpRequest httpRequest, HttpResponse httpResponse) {
+    public boolean execute(HttpRequest httpRequest, LastHttpContent lastHttpContent) {
         // HEADER 에서 token 체크
         HttpHeaders headers = httpRequest.headers();
         System.out.println("filter1");
@@ -30,7 +31,7 @@ public class AuthenticationFilter implements Filter {
     }
 
     @Override
-    public void postProcessing(HttpRequest httpRequest, HttpResponse httpResponse) {
+    public void postProcessing(HttpRequest httpRequest, LastHttpContent lastHttpContent) {
         System.out.println("AuthenticationFilter : postProcessing ");
     }
 

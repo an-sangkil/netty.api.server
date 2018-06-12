@@ -4,8 +4,11 @@ import com.mezzomedia.server.web.servlet.filter.AuthenticationFilter;
 import com.mezzomedia.server.web.servlet.filter.CorsFilter;
 import com.mezzomedia.server.web.servlet.filter.core.FilterManager;
 import com.mezzomedia.server.web.servlet.filter.core.Target;
+
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.LastHttpContent;
 
 /**
  * <pre>
@@ -18,7 +21,7 @@ import io.netty.handler.codec.http.HttpResponse;
  */
 public class IntercepterFilter {
 
-    public  IntercepterFilter(HttpRequest request , HttpResponse response) throws Exception {
+	public IntercepterFilter(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx) throws Exception {
 
         FilterManager filterManager = new FilterManager(new Target());
 
@@ -27,7 +30,8 @@ public class IntercepterFilter {
         filterManager.setFilter(new CorsFilter());
 
         // 필터 실행
-        filterManager.filterRequest(request, response);
+        filterManager.filterRequest(httpRequest, lastHttpContent, ctx);
 
     }
+
 }

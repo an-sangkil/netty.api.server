@@ -35,6 +35,12 @@ public class Dispatcher {
 	
 	@Autowired private ApplicationContextProvider applicationContextProvider;
 	
+	
+	/**
+	 * Spring Context를 주입 받아 사용하기 위함.
+	 * {@link ApplicationContextProvider} 사용
+	 */
+	@Deprecated
 	private static ApplicationContext APPLICATION_SPRING_CONTEXT;
 
 
@@ -61,26 +67,24 @@ public class Dispatcher {
 		logger.debug("///////////////////////////////////////////////////////////////////");
 		logger.debug("//  AEROSPIKE TEST ");
 		logger.debug("///////////////////////////////////////////////////////////////////");
-		AerospikeService aerospikeService =ApplicationContextProvider.getBean(AerospikeService.class);
+		
+		AerospikeService aerospikeService = ApplicationContextProvider.getBean(AerospikeService.class);
 		aerospikeService.save(new AerospikeProduct());
 
-
-
-
+		
+		
 
 //		logger.debug("///////////////////////////////////////////////////////////////////");
 //		logger.debug("//  Redis TEST");
 //		logger.debug("///////////////////////////////////////////////////////////////////");
-//
 //		RedisService redisService = ApplicationContextProvider.getBean(RedisService.class);
 //		redisService.save(new Object());
 
 //		logger.debug("///////////////////////////////////////////////////////////////////");
 //		logger.debug("//  Mybatis  TEST");
 //		logger.debug("///////////////////////////////////////////////////////////////////");
-//
-		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
-		mybatisService.findUserList();
+//		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
+//		mybatisService.findUserList();
 
 		return null;
 	}
