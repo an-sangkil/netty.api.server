@@ -1,8 +1,5 @@
 package com.mezzomedia.server.function;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
@@ -10,18 +7,19 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.mezzomedia.server.config.LogMaker;
 import com.mezzomedia.server.function.ServerResponse.BodyBuilder;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.EmptyHeaders;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.DefaultHttpHeaders;
+import io.netty.handler.codec.http.EmptyHttpHeaders;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.CharsetUtil;
 
 /**
@@ -36,11 +34,11 @@ import io.netty.util.CharsetUtil;
  *
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
-class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
-	
+public class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 	
 	private final HttpResponseStatus httpResponseStatus;
-	private HttpHeaders httpHeaders;
+	private HttpHeaders httpHeaders = new DefaultHttpHeaders();
+	private FullHttpResponse response;
 	
 	public DefaultServerResponseBuilder(HttpResponseStatus ok) {
 		Assert.notNull(ok,"ServerResponse must not be null");
@@ -65,6 +63,12 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 		this.httpHeaders.set(HttpHeaderNames.CONTENT_LENGTH, contentLength);
 		return this;
 	}
+	
+	@Override
+	public BodyBuilder contentLength() {
+		this.httpHeaders.set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+		return this;
+	}
 
 	@Override
 	public BodyBuilder contentType(String contentType, String directive) {
@@ -84,31 +88,24 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 	}
 	
 	@Override
-	public FullHttpResponse writeTo(HttpObject currentObj, ChannelHandlerContext ctx) {
-
-        // Build the response object.
-        FullHttpResponse response = new DefaultFullHttpResponse(
-                                                                HTTP_1_1,
-                                                                currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
-                                                                Unpooled.copiedBuffer( "test", CharsetUtil.UTF_8));
-
-        // Write the response.
-        ctx.write(response);
-        
-		
-		return response;
-	}
-	
-
-	public DefaultServerResponseBuilder build() {
-		return new DefaultServerResponseBuilder(this.httpHeaders, this.httpResponseStatus);
-	}
-
-	@Override
 	public FullHttpResponse body() {
 		return null;
 	}
 	
+	
+	@Override
+	public FullHttpResponse writeTo(HttpObject currentObj, ChannelHandlerContext ctx, Object o) {
 
+        // Build the response object.
+        response = new DefaultFullHttpResponse(
+                                                                HTTP_1_1,
+                                                                currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
+                                                                Unpooled.copiedBuffer( o.toString() , CharsetUtil.UTF_8));
+        
+        this.contentLength();
+        response.headers().set(httpHeaders);
+        
+		return response;
+	}
 	
 }

@@ -2,7 +2,7 @@ package com.mezzomedia.core.model.common;
 
 import com.mezzomedia.core.code.CommonCode;
 
-public abstract class ResponseObject<T> {
+public abstract class AbstractResponseObject<T> {
 	
 	/** 응답시 넘겨줄 객체 를 제네릭으로 선언하여 사용한다. */
 	private T object;

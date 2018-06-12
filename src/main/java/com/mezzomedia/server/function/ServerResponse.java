@@ -36,6 +36,7 @@ public interface ServerResponse {
 		public BodyBuilder header(String headerName, String... headerValues);
 		
 		BodyBuilder contentLength(long contentLength);
+		BodyBuilder contentLength();
 		
 		/**
 		 * 
@@ -52,7 +53,7 @@ public interface ServerResponse {
 		
 		FullHttpResponse body();
 		
-		FullHttpResponse writeTo(HttpObject currentObj, ChannelHandlerContext ctx); 
+		FullHttpResponse writeTo(HttpObject currentObj, ChannelHandlerContext ctx , Object o); 
 		
 	}
 }
