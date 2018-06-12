@@ -1,5 +1,7 @@
 package com.mezzomedia.server.web.servlet.filter.intercepter;
 
+import java.util.Map;
+
 import com.mezzomedia.core.model.common.ResponseResult;
 import com.mezzomedia.server.web.servlet.filter.AuthenticationFilter;
 import com.mezzomedia.server.web.servlet.filter.CorsFilter;
@@ -34,7 +36,7 @@ public class IntercepterFilter {
 		
 		private ResponseResult<Object> responseResult;
 		
-		public Builder(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx) throws Exception {
+		public Builder(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx, Map<String, Object> requestData) throws Exception {
 
 	        FilterManager filterManager = new FilterManager(new Target());
 

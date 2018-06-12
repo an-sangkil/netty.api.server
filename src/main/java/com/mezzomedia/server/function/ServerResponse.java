@@ -53,7 +53,14 @@ public interface ServerResponse {
 		
 		FullHttpResponse body();
 		
-		FullHttpResponse writeTo(HttpObject currentObj, ChannelHandlerContext ctx , Object o); 
+		/**
+		 * 
+		 * @param currentObj
+		 * @param ctx
+		 * @param o
+		 * @return
+		 */
+		FullHttpResponse body(HttpObject currentObj, ChannelHandlerContext ctx, Object o); 
 		
 	}
 }

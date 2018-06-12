@@ -94,14 +94,14 @@ public class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder 
 	
 	
 	@Override
-	public FullHttpResponse writeTo(HttpObject currentObj, ChannelHandlerContext ctx, Object o) {
+	public FullHttpResponse body(HttpObject currentObj, ChannelHandlerContext ctx, Object o) {
 
         // Build the response object.
         response = new DefaultFullHttpResponse(
-                                                                HTTP_1_1,
-                                                                currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
-                                                                Unpooled.copiedBuffer( o.toString() , CharsetUtil.UTF_8));
-        
+                                                HTTP_1_1,
+                                                currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
+                                                Unpooled.copiedBuffer( o.toString() , CharsetUtil.UTF_8));
+
         this.contentLength();
         response.headers().set(httpHeaders);
         

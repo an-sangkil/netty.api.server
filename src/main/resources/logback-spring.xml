@@ -9,7 +9,7 @@
 	<appender name="DAILY_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/%d{yyyy,aux}/%d{MM,aux}/%d{dd,aux}/ad.middleware.application.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+			<fileNamePattern>logs/%d{yyyy,aux}/%d{MM,aux}/%d{dd,aux}/ad.middleware.application.%d{yyyyMMddHH}.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">

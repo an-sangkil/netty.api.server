@@ -1,4 +1,4 @@
-package com.mezzomedia.core.model.dto;
+package com.mezzomedia.core.model.dto.demo;
 
 import org.springframework.data.annotation.Id;
 

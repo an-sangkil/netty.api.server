@@ -39,6 +39,7 @@ public class FilterManager {
         
     }
 
+  
     /**
      * Filter 실행
      * @param request
@@ -47,7 +48,7 @@ public class FilterManager {
      */
 	public void filterRequest(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx) throws Exception {
 		
-		 AbstractResponseObject<ResponseResult<Object>> t = filterChain.execute(httpRequest, lastHttpContent, ctx);
+		 filterChain.execute(httpRequest, lastHttpContent, ctx);
 		
 	}
 

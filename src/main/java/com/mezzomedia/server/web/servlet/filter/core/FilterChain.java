@@ -45,9 +45,6 @@ public class FilterChain<T> {
         for (Filter filter : filters ) {
             boolean preBoolean =  filter.execute(httpRequest, lastHttpContent);
             if(!preBoolean) {
-            	
-            	//ServerResponse.status(HttpResponseStatus.INTERNAL_SERVER_ERROR).writeTo(currentObj, ctx, o);
-            	
             	throw new Exception(" Filter execute : ");
             }
         }

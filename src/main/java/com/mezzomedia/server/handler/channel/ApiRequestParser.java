@@ -1,11 +1,6 @@
 package com.mezzomedia.server.handler.channel;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
-import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 import java.util.HashMap;
@@ -16,12 +11,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mezzomedia.server.config.LogMaker;
-import com.mezzomedia.server.function.ServerResponse;
 import com.mezzomedia.server.web.servlet.filter.intercepter.IntercepterFilter;
 
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -29,12 +20,10 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.LastHttpContent;
-import io.netty.util.CharsetUtil;
+import io.netty.util.AttributeKey;
 
 /**
  * <pre>
@@ -115,10 +104,8 @@ public class ApiRequestParser extends AbstractRequestParameterParser {
         try {
         	
         	// 인터 셉터 실행
-        	new IntercepterFilter.Builder(msg, lastHttpContent, ctx);
-
-		}catch (Exception e) {
-			e.printStackTrace();
+        	ctx.channel().attr(AttributeKey.valueOf("request_param")).set(requestData);
+        	new IntercepterFilter.Builder(msg, lastHttpContent, ctx, requestData);
 		} finally {
             requestData.clear();
         }
@@ -148,39 +135,6 @@ public class ApiRequestParser extends AbstractRequestParameterParser {
 		this.httpRequest = null;
     }
 
-
-
-
-
-    /**
-     *  응답에 대한 요청 처리
-     * @param currentObj
-     * @param ctx
-     * @return
-     */
-	private boolean writeResponse(HttpObject currentObj, ChannelHandlerContext ctx) {
-        
-		// Decide whether to close the connection or not.
-        boolean keepAlive = HttpUtil.isKeepAlive(httpRequest);
-
-        // Build the response object.
-        FullHttpResponse response = new DefaultFullHttpResponse(
-                                                                HTTP_1_1,
-                                                                currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
-                                                                Unpooled.copiedBuffer( "test", CharsetUtil.UTF_8));
-        //HttpHeader build ;
-        response.headers().set(CONTENT_TYPE, "application/text; charset=UTF-8");
-        if (keepAlive) {
-            response.headers().set(CONTENT_LENGTH, response.content().readableBytes());
-            response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
-        }
-
-        // Write the response.
-        ctx.write(response);
-        
-        logger.debug(LogMaker.responseMaker ,"ResponseData = {}", response.content());
-        return keepAlive;
-    }
 	
 	private static void send100Continue(ChannelHandlerContext ctx) {
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, CONTINUE);

@@ -9,12 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import com.mezzomedia.core.code.CommonCode;
 import com.mezzomedia.core.model.common.AbstractResponseObject;
 import com.mezzomedia.core.model.common.ResponseResult;
 import com.mezzomedia.core.model.domain.object.User;
+import com.mezzomedia.core.model.dto.audience.Audience;
 import com.mezzomedia.core.service.MybatisService;
+import com.mezzomedia.core.service.audience.AudienceAerospikeService;
 import com.mezzomedia.server.config.ApplicationContextProvider;
 import com.mezzomedia.server.function.ServerResponse;
+import com.mezzomedia.server.handler.channel.ApiRequestParser;
+import com.mezzomedia.util.utils.json.JsonUtils;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -83,18 +88,71 @@ public class Dispatcher {
 		HttpMethod method = httpRequest.method();
 
 			
-		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
-		List<User> users = mybatisService.findUserList();
-		AbstractResponseObject<List<User>> response =  new ResponseResult<>();
-		response.setObject(users);
+		
+		AbstractResponseObject<Object> response =  new ResponseResult<>();
+		
+		
+		
+		switch (uri.getPath()) {
+		case "/audience":
+			
+			
+			AudienceAerospikeService audienceAerospikeService = ApplicationContextProvider.getBean(AudienceAerospikeService.class);
+			Audience audience = audienceAerospikeService.save(new Audience());
+			
+			response.setStateCode(CommonCode.SUCCESS);
+			response.setResponseMessage("저장 성공 ");
+			response.setObject(audience);
+			
+			
+			break;
+		case "/user/findAll" :
+			
+			MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
+			List<User> users = mybatisService.findUserList();
+			response.setStateCode(CommonCode.SUCCESS);
+			response.setObject(users);
+			
+			break;
+			
+		default:
+			
+			response.setStateCode(CommonCode.FAIL_NODATA);
+			
+			
+			break;
+		}
+		
+		
+		
 		
 		// Response 
 		response(httpRequest, lastHttpContent, ctx, response);
 		
+
+//		logger.debug("///////////////////////////////////////////////////////////////////");
+//		logger.debug("//  Redis TEST");
+//		logger.debug("///////////////////////////////////////////////////////////////////");
+//		RedisService redisService = ApplicationContextProvider.getBean(RedisService.class);
+//		redisService.save(new Object());
+
+//		logger.debug("///////////////////////////////////////////////////////////////////");
+//		logger.debug("//  Mybatis  TEST");
+//		logger.debug("///////////////////////////////////////////////////////////////////");
+//		MybatisService mybatisService = ApplicationContextProvider.getBean(MybatisService.class);
+//		mybatisService.findUserList();
+
 	}
 	
-	
-	public static <T> void response( HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx, AbstractResponseObject<T> response) {
+	/**
+	 * 
+	 * @param httpRequest
+	 * @param lastHttpContent
+	 * @param ctx
+	 * @param response
+	 * @throws Exception 
+	 */
+	public static <T> void response( HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx, AbstractResponseObject<T> response) throws Exception {
 		
 		// Decide whether to close the connection or not.
         boolean keepAlive = HttpUtil.isKeepAlive(httpRequest);
@@ -106,12 +164,11 @@ public class Dispatcher {
 		FullHttpResponse fullHttpResponse = ServerResponse
 			.status(HttpResponseStatus.INTERNAL_SERVER_ERROR)
 			.contentType("", "")
-			.writeTo(lastHttpContent, ctx, response);
+			.body(lastHttpContent, ctx, JsonUtils.convertJson(response));
 		
 		
 		// Write the response.
         ctx.write(fullHttpResponse);
-        
 		
 	}
 
