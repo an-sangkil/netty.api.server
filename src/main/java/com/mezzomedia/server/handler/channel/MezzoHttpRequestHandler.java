@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mezzomedia.server.config.LogMaker;
+import com.mezzomedia.server.function.ServerResponse;
 import com.mezzomedia.server.web.servlet.filter.intercepter.IntercepterFilter;
 
 import io.netty.buffer.Unpooled;
@@ -112,7 +113,10 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
         ////////////////////////////////////////////////////
         try {
             // 인터 셉터 실행
-            new IntercepterFilter(httpRequest, null);
+        	
+        	FullHttpResponse httpResponse =  ServerResponse.isOk().body();
+            new IntercepterFilter(httpRequest, httpResponse);
+            
 
 		} finally {
 
@@ -174,8 +178,7 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
                                                                 HTTP_1_1,
                                                                 currentObj.decoderResult().isSuccess() ? OK : BAD_REQUEST,
                                                                 Unpooled.copiedBuffer( "test", CharsetUtil.UTF_8));
-
-        //HttpHeaderNames.CONTENT_LENGTH;
+        //HttpHeader build ;
         response.headers().set(CONTENT_TYPE, "application/text; charset=UTF-8");
         if (keepAlive) {
             response.headers().set(CONTENT_LENGTH, response.content().readableBytes());
@@ -184,6 +187,7 @@ public class MezzoHttpRequestHandler extends AbstractRequestParameterParser {
 
         // Write the response.
         ctx.write(response);
+        
         logger.debug(LogMaker.responseMaker ,"ResponseData = {}", response.content());
         return keepAlive;
     }

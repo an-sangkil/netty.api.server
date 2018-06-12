@@ -6,7 +6,7 @@ import io.netty.handler.codec.http.HttpRequest;
 
 /**
  * <pre>
- * Description :
+ * Description : 요청 파라미터에 대한 파싱 인터페이스 
  * @author skan
  * @since 2018.05.02
  * @version
