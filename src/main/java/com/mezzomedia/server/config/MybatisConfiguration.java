@@ -5,6 +5,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
+import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +35,7 @@ import javax.sql.DataSource;
 @Configuration
 @Lazy
 @EnableTransactionManagement
-@MapperScan(basePackages={"com.mezzomedia.core.repository.mybatis"}
+@MapperScan(basePackages={"com.mezzomedia.template.repository.mybatis"}
         , sqlSessionFactoryRef="mybatisSqlSessionFactory"
 )
 
@@ -50,7 +51,7 @@ public class MybatisConfiguration implements EnvironmentAware {
     private String DB_USERNAME;
 
     @Resource
-    public org.mybatis.spring.boot.autoconfigure.MybatisProperties mybatisProperties;
+    public MybatisProperties mybatisProperties;
 
     @Bean(name = "mybatisDataSource")
     public DataSource dataSource() {
@@ -116,7 +117,7 @@ public class MybatisConfiguration implements EnvironmentAware {
     private Environment env;
 
     /* (non-Javadoc)
-     * @see org.springframework.context.EnvironmentAware#setEnvironment(org.springframework.core.core.env.Environment)
+     * @see org.springframework.context.EnvironmentAware#setEnvironment(org.springframework.template.template.env.Environment)
      */
     @Override
     public void setEnvironment(Environment environment) {

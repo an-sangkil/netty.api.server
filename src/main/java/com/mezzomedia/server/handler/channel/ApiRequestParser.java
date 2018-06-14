@@ -27,19 +27,19 @@ import io.netty.util.AttributeKey;
 
 /**
  * <pre>
- * 	 HTTP Channel Handler 설정 및 처리 
- * 		모든 Request 및 Response 의 처리를  해당 채널에서 구현 한다. 
- * 
- *  	TODO : 1. Auth 처리 
- *             2. Parameter 처리 . 
- *             3. URL Mapping 
- *  
- *    
+ * 	 HTTP Channel Handler 설정 및 처리
+ * 		모든 Request 및 Response 의 처리를  해당 채널에서 구현 한다.
+ *
+ *  	TODO : 1. Auth 처리
+ *             2. Parameter 처리 .
+ *             3. URL Mapping
+ *
+ *
  * </pre>
  *
  * @author skan
  * @since 2018. 2. 27.
- * @version 
+ * @version
  *
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
@@ -91,29 +91,29 @@ public class ApiRequestParser extends AbstractRequestParameterParser {
         LastHttpContent lastHttpContent = null;
 		if (msg instanceof HttpContent) {
             if (msg instanceof LastHttpContent) {
-                lastHttpContent = (LastHttpContent) msg;        
+                lastHttpContent = (LastHttpContent) msg;
             }
         }
 
 
         ////////////////////////////////////////////////////
-        //	1. Request Mapping 처리 
+        //	1. Request Mapping 처리
 		//	2. Business logic 처리
-		//	3. Response 처리 
+		//	3. Response 처리
         ////////////////////////////////////////////////////
         try {
-        	
+
         	// 인터 셉터 실행
         	ctx.channel().attr(AttributeKey.valueOf("request_param")).set(requestData);
         	new IntercepterFilter.Builder(msg, lastHttpContent, ctx, requestData);
 		} finally {
             requestData.clear();
         }
-        
+
         // 전역 데이터 초기화
         this.reset();
 	}
-	
+
 	@Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         logger.info("데이터 수신 완료 ");
@@ -123,7 +123,7 @@ public class ApiRequestParser extends AbstractRequestParameterParser {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {
-    	
+
         ctx.fireExceptionCaught(cause);
         ctx.close();
     }
@@ -135,7 +135,7 @@ public class ApiRequestParser extends AbstractRequestParameterParser {
 		this.httpRequest = null;
     }
 
-	
+
 	private static void send100Continue(ChannelHandlerContext ctx) {
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, CONTINUE);
         ctx.write(response);

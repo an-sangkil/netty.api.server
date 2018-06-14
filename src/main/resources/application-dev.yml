@@ -24,7 +24,7 @@ spring:
     port: 6379
 
 mybatis:
-    type-aliases-package: com.mezzomedia.core.model.domain.object
+    type-aliases-package: com.mezzomedia.template.model.domain.object
     configuration:
         map-underscore-to-camel-case: true
         use-generated-keys: true
@@ -32,7 +32,7 @@ mybatis:
         default-statement-timeout: 30
         default-executor-type: reuse
         auto-mapping-behavior: partial
-    mapper-locations: classpath:com/mezzomedia/core/repository/mybatis/*.xml
+    mapper-locations: classpath:com/mezzomedia/template/repository/mybatis/*.xml
 
 # Database
 db:

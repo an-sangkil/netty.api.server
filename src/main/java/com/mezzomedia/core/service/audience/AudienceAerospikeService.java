@@ -28,16 +28,18 @@ public class AudienceAerospikeService {
 		
 		Map<String, String> frequency = new HashMap<>();
 		frequency.put("62263", "1");
-		
-		audience.setAdidTarget(new ADIDTarget());
-		audience.setCategory(new Category());
-		audience.setRetarget(new Retarget());
-		audience.setFrequency(frequency);
+
+
 		
 		
 		List<Audience> audiences = new ArrayList<>();
 		
 		for (int i=0 ; i < 10000000 ; i ++) {
+			audience= new Audience();
+			audience.setAdidTarget(new ADIDTarget());
+			audience.setCategory(new Category());
+			audience.setRetarget(new Retarget());
+			audience.setFrequency(frequency);
 			audience.setAdid(UUID.randomUUID().toString());
 			audiences.add(audience);
 			
