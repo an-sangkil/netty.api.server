@@ -1,38 +1,39 @@
 package com.mezzomedia.server.template;
 
+import com.mezzomedia.core.model.common.ResponseResult;
+
 /**
- * <pre>
- * Description :
- * @author mezzomedia
- * @since 2018.06.14
- * @version
- *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * API Service request worker interface
+ * 
+ * @author kris
  */
-public interface ApiRequest<T> {
-
-
-    public void parameterValidation() throws Exception;
+public interface ApiRequest {
+	
+    /**
+     * Request param null check method.
+     * 
+     * @throws RequestParamException
+     */
+    public void requestParamValidation() throws Exception;
 
     /**
      * 서비스 구현
-     *
+     * 
      * @throws Exception
      */
-    public void service(T t) throws Exception;
+    public void service() throws Exception;
 
     /**
-     * 서비스 실행
-     *
+     * API서비스 호출시 실행.
+     * 
      * @throws Exception
      */
-    public void executeService(T t) throws Exception;
+    public void executeService() throws Exception;
 
     /**
-     * Response 결과값 생성
-     *
-     * @throws Exception
+     * API 서비스 수행 결과 조회.
+     * 
+     * @return
      */
-    public void responseResult() throws Exception;
-
+    public <T> ResponseResult<T> responseResult() throws Exception;
 }

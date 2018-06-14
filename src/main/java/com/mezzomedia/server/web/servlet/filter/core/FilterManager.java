@@ -1,5 +1,7 @@
 package com.mezzomedia.server.web.servlet.filter.core;
 
+import java.util.Map;
+
 import com.mezzomedia.core.model.common.AbstractResponseObject;
 import com.mezzomedia.core.model.common.ResponseResult;
 import com.mezzomedia.server.function.ServerResponse;
@@ -42,15 +44,18 @@ public class FilterManager {
   
     /**
      * Filter 실행
+     * @param requestData 
      * @param request
      * @param response
      * @throws Exception 
      */
-	public void filterRequest(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx) throws Exception {
+	public void filterRequest(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx, Map<String, Object> requestData) throws Exception {
 		
-		 filterChain.execute(httpRequest, lastHttpContent, ctx);
+		 filterChain.execute(httpRequest, lastHttpContent, ctx, requestData);
 		
 	}
+
+
 
 
 

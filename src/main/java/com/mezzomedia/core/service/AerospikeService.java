@@ -42,12 +42,6 @@ public class AerospikeService {
 		// logger.debug("AerospikeProduct = {}" , aerospikeProduct.get());
 
 
-//		List<AerospikeProduct> aerospikeProducts =  (List<AerospikeProduct>) this.aerospikeRepository.findAll();
-//		aerospikeProducts.forEach(productItem -> {
-//			productItem.toString();
-//			logger.debug("AerospikeProduct = {}" , ap.getDescription());
-//		});
-
 		return t;
 	}
 

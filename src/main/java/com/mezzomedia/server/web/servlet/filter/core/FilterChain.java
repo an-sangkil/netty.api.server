@@ -2,6 +2,7 @@ package com.mezzomedia.server.web.servlet.filter.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.mezzomedia.core.model.common.AbstractResponseObject;
 
@@ -37,9 +38,10 @@ public class FilterChain<T> {
      *
      * 최종 execute , request handler
      * @param httpRequest
+     * @param requestData 
      * @throws Exception 
      */
-	public AbstractResponseObject<T> execute(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx) throws Exception {
+	public AbstractResponseObject<T> execute(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx, Map<String, Object> requestData) throws Exception {
 		
 		// 1. 필터 전차리 순차 실행
         for (Filter filter : filters ) {
@@ -50,7 +52,7 @@ public class FilterChain<T> {
         }
 
         // 필터 완료 후 실행될  Class 호출
-        AbstractResponseObject<T> t = target.execute(httpRequest, lastHttpContent, ctx);
+        AbstractResponseObject<T> t = target.execute(httpRequest, lastHttpContent, ctx, requestData);
 
         
         // 2. 필터 후처리 순차실행

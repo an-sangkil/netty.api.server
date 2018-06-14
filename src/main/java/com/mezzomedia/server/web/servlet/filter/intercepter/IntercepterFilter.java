@@ -45,7 +45,7 @@ public class IntercepterFilter {
 	        filterManager.setFilter(new CorsFilter());
 
 	        // 필터 실행
-	        filterManager.filterRequest(httpRequest, lastHttpContent, ctx);
+	        filterManager.filterRequest(httpRequest, lastHttpContent, ctx, requestData);
 	    }
 		
 		
