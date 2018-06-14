@@ -17,7 +17,7 @@ import com.mezzomedia.server.template.AbstractApiRequest;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @Service
-public class AudienceFindAerospike extends AbstractApiRequest<Audience> {
+public class AudienceFindAerospike2 extends AbstractApiRequest<Audience> {
 
 
 	@Autowired  private AudienceAerospikeRepository audienceAerospikeRepository;
@@ -33,8 +33,6 @@ public class AudienceFindAerospike extends AbstractApiRequest<Audience> {
 		audienceAerospikeRepository.findOne(t.getAdid());
 		
 	}
-	
-	
 
 	@Override
 	public void requestParamValidation() throws Exception {
@@ -53,5 +51,8 @@ public class AudienceFindAerospike extends AbstractApiRequest<Audience> {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+
 
 }

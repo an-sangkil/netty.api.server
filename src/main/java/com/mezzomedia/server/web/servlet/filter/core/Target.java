@@ -1,19 +1,23 @@
 package com.mezzomedia.server.web.servlet.filter.core;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.LastHttpContent;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mezzomedia.core.model.common.AbstractResponseObject;
+import com.mezzomedia.core.model.common.ResponseResult;
+import com.mezzomedia.server.function.ServerResponse;
+import com.mezzomedia.server.template.AbstractApiRequest;
 import com.mezzomedia.server.web.servlet.Dispatcher;
+import com.mezzomedia.util.utils.json.JsonUtils;
 
-import java.net.URI;
-import java.util.HashMap;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpUtil;
+import io.netty.handler.codec.http.LastHttpContent;
 
 /**
  * <pre>
@@ -36,11 +40,17 @@ public class Target {
 	 * @param lastHttpContent
 	 * @param ctx
 	 */
-	public <T> AbstractResponseObject<T>  execute(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx) throws Exception{
-		//logger.debug("target execute Start !!!!!!!!!!!!!!!!!! ");
-		
+	public <T> AbstractResponseObject<T> execute(HttpRequest httpRequest, LastHttpContent lastHttpContent,
+			ChannelHandlerContext ctx) throws Exception {
+		// logger.debug("target execute Start !!!!!!!!!!!!!!!!!! ");
+
+		// service  호출
 		Dispatcher.dispatch(httpRequest, lastHttpContent, ctx);
 		
+
 		return null;
 	}
+
+	
+
 }
