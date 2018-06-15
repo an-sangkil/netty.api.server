@@ -1,6 +1,7 @@
 package com.mezzomedia.server.web.servlet;
 
 import java.net.URI;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,24 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.mezzomedia.core.model.common.AbstractResponseObject;
-import com.mezzomedia.core.model.common.ResponseResult;
-import com.mezzomedia.core.model.dto.audience.Audience;
 import com.mezzomedia.core.service.audience.AudienceFindAerospike;
 import com.mezzomedia.server.config.ApplicationContextProvider;
-import com.mezzomedia.server.function.ServerResponse;
-import com.mezzomedia.server.template.AbstractApiRequest;
-import com.mezzomedia.server.template.ApiRequestObject;
-import com.mezzomedia.util.utils.json.JsonUtils;
+import com.mezzomedia.server.template.ApiRequest;
 
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.LastHttpContent;
 
 /**
@@ -64,6 +54,7 @@ public class Dispatcher {
 	/**
 	 * 
 	 * TODO : 요청 URI , URL PATH 확인후 분기 처리
+	 * @param requestData 
 	 * 
 	 * @param <T>
 	 * @param <T>
@@ -72,8 +63,10 @@ public class Dispatcher {
 	 * @param requestDate
 	 * @param urlPath
 	 */
-	public static void  dispatch(HttpRequest httpRequest, LastHttpContent lastHttpContent,
-			ChannelHandlerContext ctx) throws Exception {
+	public static ApiRequest dispatch(HttpRequest httpRequest
+			, LastHttpContent lastHttpContent
+			, ChannelHandlerContext ctx 
+			, Map<String, Object> requestData) throws Exception {
 
 		logger.debug("dispatch ........ handling....");
 
@@ -81,11 +74,13 @@ public class Dispatcher {
 		String urlPath = httpRequest.uri();
 		URI uri = URI.create(urlPath);
 		HttpMethod method = httpRequest.method();
-		AbstractApiRequest abstractApiRequest = null;
+		
+		ApiRequest  apiRequest = null; 
 		
 		switch (uri.getPath()) {
 		case "/audience":
-			abstractApiRequest = ApplicationContextProvider.getBean(AudienceFindAerospike.class);
+			
+			apiRequest = ApplicationContextProvider.getBean(AudienceFindAerospike.class, requestData);
 			
 			break;
 		case "/user/findAll":
@@ -97,40 +92,10 @@ public class Dispatcher {
 			break;
 		}
 		
-		abstractApiRequest.executeService();
 		
-		// service.executeService(null);
-		// ResponseResult<T> responseResult = apirequest.responseResult();
-
-		// TODO
-		// response(httpRequest, lastHttpContent, ctx, responseResult);
+		return apiRequest;
 		
 	}
 
-	/**
-	 * 
-	 * @param httpRequest
-	 * @param lastHttpContent
-	 * @param ctx
-	 * @param response
-	 * @throws Exception
-	 */
-	public static <T> void response(HttpRequest httpRequest, LastHttpContent lastHttpContent, ChannelHandlerContext ctx,
-			AbstractResponseObject<T> response) throws Exception {
-
-		// Decide whether to close the connection or not.
-		boolean keepAlive = HttpUtil.isKeepAlive(httpRequest);
-
-		if (!keepAlive) {
-			ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
-		}
-
-		FullHttpResponse fullHttpResponse = ServerResponse.status(HttpResponseStatus.INTERNAL_SERVER_ERROR)
-				.contentType("", "").body(lastHttpContent, ctx, JsonUtils.convertJson(response));
-
-		// Write the response.
-		ctx.write(fullHttpResponse);
-
-	}
 
 }

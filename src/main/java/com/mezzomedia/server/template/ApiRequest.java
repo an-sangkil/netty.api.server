@@ -8,6 +8,7 @@ import com.mezzomedia.core.model.common.ResponseResult;
  * @author kris
  */
 public interface ApiRequest {
+	
     /**
      * Request param null check method.
      * 
@@ -27,7 +28,7 @@ public interface ApiRequest {
      * 
      * @throws Exception
      */
-    public void executeService();
+    public void executeService() throws Exception;
 
     /**
      * API 서비스 수행 결과 조회.
