@@ -12,7 +12,7 @@ public interface ApiRequest {
     /**
      * Request param null check method.
      * 
-     * @throws RequestParamException
+     * @throws Exception
      */
     public void requestParamValidation() throws Exception;
 

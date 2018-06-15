@@ -35,7 +35,8 @@ import javax.sql.DataSource;
 @Configuration
 @Lazy
 @EnableTransactionManagement
-@MapperScan(basePackages={"com.mezzomedia.template.repository.mybatis"}
+@MapperScan(
+        basePackageClasses = {com.mezzomedia.core.repository.mybatis.MybatisUserMapper.class}
         , sqlSessionFactoryRef="mybatisSqlSessionFactory"
 )
 

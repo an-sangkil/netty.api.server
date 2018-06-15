@@ -33,7 +33,11 @@ public abstract class AbstractRequestParameterParser extends SimpleChannelInboun
     public void  readGetData(HttpRequest httpRequest, Map<String,Object> requestData ) {
         QueryStringDecoder queryStringDecoder = new QueryStringDecoder(httpRequest.uri(), CharsetUtil.UTF_8);
         queryStringDecoder.parameters().forEach((k,v) -> {
-            requestData.put(k , v);
+
+            v.forEach( itemValue -> {
+                requestData.put(k , itemValue);
+            });
+
         });
     }
 

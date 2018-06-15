@@ -50,7 +50,8 @@ public class Target {
 		// service  호출
 		ApiRequest apiRequest = Dispatcher.dispatch(httpRequest, lastHttpContent, ctx, requestData);
 		
-		
+		System.out.println("apiRequest = "+ apiRequest);
+
 		apiRequest.executeService();
 		ResponseResult<T> response =  apiRequest.responseResult();
 		this.response(httpRequest, lastHttpContent, ctx, response);

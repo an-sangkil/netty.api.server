@@ -3,6 +3,7 @@ package com.mezzomedia.core.service.audience;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.mezzomedia.core.code.CommonCode;
@@ -20,10 +21,11 @@ import com.mezzomedia.server.template.AbstractApiTemplate;
  * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
  */
 @Service
+@Scope("prototype")
 public class AudienceFindAerospike extends AbstractApiTemplate<Audience> {
 
 
-	public AudienceFindAerospike(Map<String, String> reqData) {
+	public AudienceFindAerospike(Map<String, Object> reqData) {
 		super(reqData);
 		// TODO Auto-generated constructor stub
 	}
@@ -39,7 +41,7 @@ public class AudienceFindAerospike extends AbstractApiTemplate<Audience> {
 	@Override
 	public void service() throws Exception {
 		
-		String adid = reqData.get("adid");
+		String adid = (String) reqData.get("adid");
 		Audience audience =  audienceAerospikeRepository.findOne(adid);
 		this.responseResult.setObject(audience);
 		this.responseResult.setStateCode(CommonCode.SUCCESS);

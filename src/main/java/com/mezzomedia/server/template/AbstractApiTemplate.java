@@ -17,14 +17,14 @@ import com.mezzomedia.core.model.common.ResponseResult;
  */
 public abstract class AbstractApiTemplate<T> implements ApiRequest {
 
-	protected Map<String, String> reqData;
+	protected Map<String, Object> reqData;
 	protected ResponseResult<T> responseResult;
 	
 
 	public AbstractApiTemplate() {
 	}
 
-	public AbstractApiTemplate(Map<String, String> reqData) {
+	public AbstractApiTemplate(Map<String, Object> reqData) {
 		this.reqData = reqData;
 		this.responseResult = new ResponseResult<>();
 	}
