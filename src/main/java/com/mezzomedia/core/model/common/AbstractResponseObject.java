@@ -13,8 +13,8 @@ public abstract class AbstractResponseObject<T> {
 	/**
 	 * 상태코드
 	 * {
-	 * 		SUCCESS : 성공
-	 * 		FAIL	: 실패
+	 * 		success : 성공
+	 * 		fail	: 실패
 	 * } 
 	 * 
 	 */
