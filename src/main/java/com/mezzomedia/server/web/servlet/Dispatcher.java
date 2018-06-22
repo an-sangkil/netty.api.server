@@ -53,16 +53,13 @@ public class Dispatcher {
 	}
 
 	/**
-	 * 
-	 * TODO : 요청 URI , URL PATH 확인후 분기 처리
-	 * @param requestData 
-	 * 
-	 * @param <T>
-	 * @param <T>
-	 *
-	 * @param httpMethod
-	 * @param requestDate
-	 * @param urlPath
+	 *  TODO : 요청 URI , URL PATH 확인후 분기 처리
+	 * @param httpRequest
+	 * @param lastHttpContent
+	 * @param ctx
+	 * @param requestData
+	 * @return
+	 * @throws Exception
 	 */
 	public static ApiRequest dispatch(HttpRequest httpRequest
 			, LastHttpContent lastHttpContent

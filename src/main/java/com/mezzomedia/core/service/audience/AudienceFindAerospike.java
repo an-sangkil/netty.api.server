@@ -2,6 +2,7 @@ package com.mezzomedia.core.service.audience;
 
 import java.util.Map;
 
+import com.mezzomedia.core.model.common.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,11 @@ public class AudienceFindAerospike extends AbstractApiTemplate<Audience> {
 		
 		String adid = (String) reqData.get("adid");
 		Audience audience =  audienceAerospikeRepository.findOne(adid);
-		this.responseResult.setObject(audience);
+
+		Data<Audience> data = new Data<>();
+		data.setObject(audience);
+
+		this.responseResult.setData(data);
 		this.responseResult.setStateCode(CommonCode.SUCCESS);
 		
 		
