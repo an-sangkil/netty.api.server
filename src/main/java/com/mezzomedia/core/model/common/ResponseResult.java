@@ -1,6 +1,7 @@
 package com.mezzomedia.core.model.common;
 
 import com.mezzomedia.core.code.CommonCode;
+import com.mezzomedia.util.utils.json.JsonUtils;
 
 public class ResponseResult<T> extends AbstractResponseObject<T> {
 
@@ -53,4 +54,15 @@ public class ResponseResult<T> extends AbstractResponseObject<T> {
     public void setStateCode(CommonCode stateCode) {
         this.stateCode = stateCode;
     }
+
+	@Override
+	public String toJsonString() throws Exception {
+		return JsonUtils.convertJson(this.getClass());
+	}
+
+	@Override
+	public String toXMLString() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

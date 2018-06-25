@@ -4,14 +4,36 @@ import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Audience {
 	
 	@Id
 	private String adid;
-	private Category category;
+	
+	/**
+	 * 
+	 */
+	@JsonProperty("click_retarget")
 	private Retarget retarget;
+	
+	/**
+	 * 카테고리 
+	 */
+	private Category category;
+	
+	/**
+	 * ADID
+	 */
+	@JsonProperty("adid_target")
 	private ADIDTarget adidTarget;
+	/**
+	 * 
+	 */
 	private int optYn;
+	/**
+	 * 빈발 빈도
+	 */
 	private Map<String,String> frequency;
 	
 	

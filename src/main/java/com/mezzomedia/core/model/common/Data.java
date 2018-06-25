@@ -1,5 +1,7 @@
 package com.mezzomedia.core.model.common;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 /**
  * <pre>
  * Description :
@@ -12,6 +14,7 @@ package com.mezzomedia.core.model.common;
 public class Data<T> implements ReturnObject  {
 
     /** 응답시 넘겨줄 객체 를 제네릭으로 선언하여 사용한다. */
+	@JsonUnwrapped
     private T object;
 
     public T getObject() {

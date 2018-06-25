@@ -2,15 +2,19 @@ package com.mezzomedia.core.model.dto.audience;
 
 import java.util.List;
 
-public class Category {
-	private List<String> adsNo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-	public List<String> getAdsNo() {
-		return adsNo;
+public class Category {
+	
+	@JsonProperty("cate_no")
+	private List<String> categoryNo;
+
+	public List<String> getCategoryNo() {
+		return categoryNo;
 	}
 
-	public void setAdsNo(List<String> adsNo) {
-		this.adsNo = adsNo;
+	public void setCategoryNo(List<String> categoryNo) {
+		this.categoryNo = categoryNo;
 	}
 	
 }
