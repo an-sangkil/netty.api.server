@@ -31,6 +31,10 @@ public interface ServerResponse {
 		return status(HttpResponseStatus.OK);
 	}
 	
+	static BodyBuilder isFail() {
+		return status(HttpResponseStatus.BAD_REQUEST);
+	}
+	
 	interface BodyBuilder {
 			
 		public BodyBuilder header(String headerName, String... headerValues);
