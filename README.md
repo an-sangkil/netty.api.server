@@ -1,5 +1,5 @@
-
-
+# Netty.API.Server
+Netty Http 코덱을 이용한 Rest APIServer  
 
 ## Docker 실행  
 ### 1. Docker Console 접속 
@@ -25,5 +25,3 @@
 	
 	 
 
-	
-	
