@@ -16,8 +16,8 @@
 	docker run -e "SPRING_PROFILES_ACTIVE=prod" --name "nettyApiServer" -p 80:8080 -t sangkil.an/adserver
 ```
   __docker option__
-   -e 컨테이너 내에서 사용할 환경변수 설정
-   -d 백그라운드 모드 
+   - -e 컨테이너 내에서 사용할 환경변수 설정
+   - -d 백그라운드 모드 
 
 ### 3. docker Start
 ``` bash
