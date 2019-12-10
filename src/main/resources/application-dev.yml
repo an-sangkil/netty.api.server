@@ -1,28 +1,73 @@
-
+#----------------------------------------------------
+# Netty Server Configuration
+#----------------------------------------------------
 netty:
   server:
     port: 8080
 
-
-aerospike:
-  host: 210.221.235.202
-  port: 3000
-  
-logging:
-  file: logs/application-dev.log
-  pattern:
-    console: "%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level %logger : %msg%n"
-    file: "%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level [%thread] %logger : %msg%n"
-  level:
-    root: INFO
-    org.springframework: INFO
-    com.mezzomedia: DEBUG
-    org.hibernate: ERROR
+#----------------------------------------------------
+#  Spring Boot Spring 기본 설정
+#----------------------------------------------------
 spring:
-  redis:
-    host: 210.221.235.202
-    port: 6379
+  devtools:
+    restart:
+      enabled: true
+  data:
+    cassandra:
+      username: cassandra
+      password: cassandra
+      ssl: false
+      contact-points: ["210.221.235.202"]  #["192.168.99.100"]   내부 docker run 할때 주석해제후 사용.
+      keyspace-name: hc_tracking_keyspace
+      repositories:
+        type: auto
+      port: 9042
+    jpa:
+      repositories:
+        enabled: true
+  kafka:
+    bootstrap-servers: ["210.221.235.202:9092","210.221.235.193:9092","210.221.235.208:9092"]
+    producer:
+      retries: 0
+    consumer:
+      group-id: aereport
+    listener:
+      concurrency: 5
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://210.221.235.202:3306/hc_tracking?useUnicode=true&useSSL=false&characterEncoding=utf8
+      username: hctracking_user
+      password: Hc_tracking1!@
+    platform: mysql
+  jpa:
+    generate-ddl: true
+    open-in-view: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate.jdbc.batch_size: 200
+      hibernate.jdbc.batch_versioned_data: true
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.enable_lazy_load_no_trans: true
 
+#----------------------------------------------------
+# aerospike Server Configuration
+#----------------------------------------------------
+aerospike.host: 210.221.235.202
+aerospike.port: 3000
+
+
+#----------------------------------------------------
+# Mybatis Configuration
+#----------------------------------------------------
 mybatis:
     type-aliases-package: com.mezzomedia.core.model.domain.object
     configuration:
@@ -34,18 +79,23 @@ mybatis:
         auto-mapping-behavior: partial
     mapper-locations: classpath:com/mezzomedia/core/repository/mybatis/*.xml
 
-# Database
-db:
-  driver: com.mysql.jdbc.Driver
-  url: jdbc:mysql://210.221.235.202:3306/ad_teck
-  username: root
-  password: mezzo2018
 
-# Hibernate
-hibernate:
-  hbm2ddl:
-    auto: update
-  dialect: org.hibernate.dialect.MySQL5Dialect
-  show_sql: true
-entitymanager:
-  packagesToScan: com.mezzomedia.adtect.web.jpa.dto
+#----------------------------------------------------
+# logging Configuration
+#----------------------------------------------------
+logging.file: logs/application-hc.server.log
+logging:
+  file:
+    max-history: 30
+    max-size: 100MB
+  #  pattern:
+  #    console: "%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level %logger : %msg%n"
+  #    file: "%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level [%thread] %logger : %msg%n"
+  level:
+    root: INFO
+    com.mezzomedia: DEBUG
+    org.springframework: INFO
+    org.hibernate: DEBUG
+    org.hibernate.type: DEBUG #TRACE
+    org.hibernate.type.BasicTypeRegistry : WARN
+    web: info
