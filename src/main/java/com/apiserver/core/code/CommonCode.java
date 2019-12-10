@@ -8,7 +8,7 @@ package com.apiserver.core.code;
  * @since 2018. 9. 8.
  * @version 
  *
- * Copyright (C) 2018 by Mezzomedia. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzomedia. All right reserved.
  */
 public enum CommonCode {
 	

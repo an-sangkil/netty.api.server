@@ -38,7 +38,7 @@ import io.netty.util.AttributeKey;
  * </pre>
  *
  * @author skan
- * @version Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * @version Copyright (C) 2018 by CJENM|Mezzomedia.Inc. All right reserved.
  * @since 2018. 2. 27.
  */
 public class ApiRequestParser extends AbstractRequestParameterParser {

@@ -18,7 +18,7 @@ import com.apiserver.server.template.AbstractApiTemplate;
  * @since 2018.06.14
  * @version
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  */
 @Service
 @Scope("prototype")

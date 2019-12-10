@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2018.04.18
  * @version
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  */
 @Mapper
 public interface MybatisUserMapper {
