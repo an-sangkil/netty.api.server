@@ -9,7 +9,7 @@ import com.apiserver.core.model.common.ResponseResult;
  * @since 2018.06.14
  * @version
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  */
 public interface ServiceTemplate<T> {
 

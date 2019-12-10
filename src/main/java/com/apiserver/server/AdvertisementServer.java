@@ -24,7 +24,7 @@ import java.util.List;
  * </pre>
  *
  * @author skan
- * @version Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * @version Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  * @since 2018. 2. 19.
  */
 @Component

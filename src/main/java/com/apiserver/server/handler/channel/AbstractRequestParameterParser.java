@@ -19,7 +19,7 @@ import java.util.Map;
  * @since 2018.05.04
  * @version
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  */
 public abstract class AbstractRequestParameterParser extends SimpleChannelInboundHandler<FullHttpRequest>  implements RequestParameterParser {
 

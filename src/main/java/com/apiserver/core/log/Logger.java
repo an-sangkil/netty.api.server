@@ -14,7 +14,7 @@ import com.apiserver.config.LogMaker;
  * @since 2018. 5. 15.
  * @version 
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzomedia.Inc. All right reserved.
  */
 public class Logger implements ILogCreation {
 	

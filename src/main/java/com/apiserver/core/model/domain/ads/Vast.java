@@ -17,7 +17,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * @since 2018. 2. 27.
  * @version 
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  */
 @JacksonXmlRootElement(localName="VAST")
 public class Vast {

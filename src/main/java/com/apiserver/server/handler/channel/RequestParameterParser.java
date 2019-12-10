@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.HttpRequest;
  * @since 2018.05.02
  * @version
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  */
 public interface RequestParameterParser {
     /**

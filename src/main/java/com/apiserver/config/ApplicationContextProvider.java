@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @since  2018. 11. 30.
  * @version 
  *
- * Copyright (C) 2018 by Mezzomedia. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia. All right reserved.
  */
 @Component
 @SuppressWarnings("static-access")

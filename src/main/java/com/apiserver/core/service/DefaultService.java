@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 2018.06.15
  * @version
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  */
 @Service
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

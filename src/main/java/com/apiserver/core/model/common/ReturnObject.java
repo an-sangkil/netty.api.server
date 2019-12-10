@@ -7,7 +7,7 @@ package com.apiserver.core.model.common;
  * @since 2018.06.21
  * @version
  *
- * Copyright (C) 2018 by Mezzomedia.Inc. All right reserved.
+ * Copyright (C) 2018 by CJENM|Mezzimedia.Inc. All right reserved.
  */
 public interface ReturnObject {
 }
