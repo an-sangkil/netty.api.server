@@ -83,7 +83,7 @@
 	</appender>
 	
 
-<!-- 	<logger name="com.mezzomedia" level="DEBUG" /> -->
+<!-- 	<logger name="com.apiserver" level="DEBUG" /> -->
 	<logger name="org.springframework" level="DEBUG" />
 
 	<root level="INFO">
